@@ -1,19 +1,91 @@
 .App {
   text-align: center;
-  width: 100vw;
-  height: 100vh;
 }
 
-.main-tab {
-  margin: 0;
-  padding: 0;
-  height: 100%;
+.main {
+  height: 100vh;
   width: 100%;
-  background-color: #282c34;
   display: flex;
+  background-color: #282c34;
+}
+
+.left-regulatins-zones {
+  border: white 1px solid;
+  margin-top: 3.27vh;
+  margin-left: 2.5vw;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  align-items: stretch;
+  display: flex;
   color: white;
+  width: 30%;
+  height: 93.7vh;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-main-tab {
+  display: flex;
+  color: white;
+  width: 70%;
+  height: 100vh;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-points {
+  margin: 25px 0;
+  display: flex;
+  text-align: center;
+  background-size: cover;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  width: 25vw;
+}
+
+input {
+  font-size: 15px;
+  margin: 15px;
+  width: 7vw;
+  height: 4vh;
+}
+
+.button-circle-div {
+  height: 10vh;
+  width: 25vw;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-circle {
+  background-color:#ffffff;
+  border: 1px black solid;
+  border-radius: 15px;
+  font-size: 3vh;
+  width: 14vw;
+  height: 5vh;
+}
+
+.button-circle-click {
+  color: #ffffff;
+  background-color: #9e1d2e;
+  border: 1px white solid;
+  border-radius: 15px;
+  font-size: 3vh;
+  width: 14vw;
+  height: 5vh;
+}
+
+.button-circle:hover {
+  color: #ffffff;
+  background-color: #282c34;
+  border: 1px white solid;
+  border-radius: 15px;
+  font-size: 3vh;
+  width: 14vw;
+  height: 5vh;
 }
