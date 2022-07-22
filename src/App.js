@@ -7,6 +7,7 @@ function App() {
   const [f1, setF1] = useState(false);
   const [f2, setF2] = useState(false);
   const [f3, setF3] = useState(false);
+  const [textAreaString, setTextAreaString] = useState("");
   const [points] = useState([[0,0],[0,0],[0,0]]);
   const [outCircle, setOuterCircle] = useState(false);
   const [middlepoints] = useState([[0,0],[0,0]]);
@@ -33,6 +34,21 @@ function App() {
 
   const handleClickOuterCircle = (event) => {
     setOuterCircle(!outCircle);
+  }
+
+  const handleValueOfTextarea = (event) => {
+    setTextAreaString(event.target.value) 
+  }
+
+  const drawSketchOfTheProble = () => {
+    let textOfProblem = textAreaString
+    let dict = {}
+    for ( let i = 0; i < textOfProblem.length; i++ ) {
+      if ( textOfProblem.charCodeAt(i) > 64 & textOfProblem.charCodeAt(i) < 91) {
+        dict[textOfProblem.charAt(i)] = 1 
+      } 
+    }
+    console.log(dict);
   }
 
 
@@ -75,16 +91,20 @@ function App() {
       <div className="main">
         <div className="left-regulatins-zones">
           <div className="input-points">
+            <textarea className="textarea-problem" rows="5" columns="2" placeholder="Вставьте текст задачи" onChange={handleValueOfTextarea} />
+            <button onClick={drawSketchOfTheProble} >Submit</button>
+          </div>
+          <div className="input-points">
             <h2>Point A</h2>
-            <input type="text" id="A" placeholder="Point(x,y)" onChange={HandleValOfInput} />
+            <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} />
           </div>
           <div className="input-points">
             <h2>Point B</h2>
-            <input type="text" id="B" placeholder="Point(x,y)" onChange={HandleValOfInput} />
+            <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} />
           </div>
           <div className="input-points">
             <h2>Point C</h2>
-            <input type="text" id="C" placeholder="Point -> (x,y)" onChange={HandleValOfInput} />
+            <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} />
           </div>
           <div className="button-circle-div">
             <button className={`${!outCircle ? "button-circle" : "button-circle-click"}`} onClick={handleClickOuterCircle}>Draw circle</button>
@@ -106,8 +126,3 @@ function App() {
 }
 
 export default App;
-
-//  function onClickHandler() {
-//  const app = window.ggbApplet;
-//  app.evalCommand(`-0=-2.8x^2(x^2(2.5x^2+y^2-2)-1.2y^2(y(3y-0.75)-6.0311)+3.09)-0.98y^2((y^2-3.01)y^2+3)-1.005`);
-//  }
