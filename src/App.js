@@ -2,6 +2,7 @@ import './App.css';
 import Geogebra from 'react-geogebra';
 import { useState } from 'react';
 import TriangleIcon from './assets/triangle.png';
+import CircleIcon from './assets/circle.png'
 import { Triangle } from './components/Triangle'
 
 
@@ -12,8 +13,11 @@ function App() {
     <div id="check" className="App">
       <div className="main">
         <div className="left-regulatins-zones">
-          <img className='figures' src={TriangleIcon} alt='triangle' onClick={() => { setMode('triangle') }}></img>
-          <Triangle />
+          <div className='figures'>
+            <img className='figuresImg' src={TriangleIcon} alt='triangle' onClick={() => { setMode('triangle') }}></img>
+            <img className='figuresImg' src={CircleIcon} alt='triangle' onClick={() => { setMode('triangle') }}></img>
+          </div>
+          {mode === 'triangle' && <Triangle />}
         </div>
         <div className="right-main-tab">
           <Geogebra

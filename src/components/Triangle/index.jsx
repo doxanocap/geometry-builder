@@ -1,7 +1,7 @@
 export const Triangle = () => {
 
   return (
-    <div className="content-layout">
+    <div className="options-menu">
       mamamama
     </div >
   )

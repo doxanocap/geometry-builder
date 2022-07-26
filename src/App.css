@@ -13,19 +13,13 @@
   border: white 1px solid;
   margin-top: 3.27vh;
   margin-left: 2.5vw;
-  /* flex-direction: column;
   align-items: stretch;
-  display: flex; */
+  display: flex;
+  flex-direction: column;
   color: white;
   width: 30%;
   height: 93.7vh;
-  /* background-size: cover;
-  justify-content: center;
-  align-items: center; */
   padding: 1vh;
-  display: grid;
-  column-gap: 1vw;
-  row-gap: 1vh;
 }
 
 .right-main-tab {
@@ -107,6 +101,23 @@
 }
 
 .figures {
+  width: 100%;
+  height: 20%;
+  justify-self: flex-start;
+  border: 2px solid yellow;
+}
+
+.figuresImg {
   width: 4vw;
   height: 8vh;
+}
+
+.options-menu {
+  width: 100%;
+  height: 80%;
+  border: 1px solid pink;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  justify-self: flex-end;
+  align-self: center;
 }
