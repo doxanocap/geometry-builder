@@ -1,15 +1,43 @@
 import { useState } from "react";
-import Geogebra from 'react-geogebra';
 
 export const Triangle = () => {
   const [f1, setF1] = useState(false);
   const [f2, setF2] = useState(false);
   const [f3, setF3] = useState(false);
-  const [textAreaString, setTextAreaString] = useState("");
   const [points] = useState([[0, 0], [0, 0], [0, 0]]);
   const [outCircle, setOuterCircle] = useState(false);
   const [middlepoints] = useState([[0, 0], [0, 0]]);
+  const [lenOfSides] = useState([0,0,0])
   const app = window.ggbApplet
+
+  const handleLenghtOfSides = (event) => {
+    let app = window.ggbApplet;
+    if (event.target.id === "ab" & event.target.value !== 0) {
+      lenOfSides[0] = parseInt(event.target.value)
+      app.evalCommand(`A=(0,0)`)
+      app.evalCommand(`B=(${event.target.value},0)`)
+      app.evalCommand(`c=Segment(A,B)`)
+    } else if (event.target.id === "ac" & event.target.value !== 0) {
+      lenOfSides[1] = parseInt(event.target.value)
+      app.evalCommand(`c1: Circle(A,${event.target.value})`)
+      app.setVisible('c1', false)
+    } else if (event.target.id === "bc" & event.target.value !== 0) {
+      lenOfSides[2] = parseInt(event.target.value)
+      app.evalCommand(`c2: Circle(B,${event.target.value})`)
+      app.setVisible('c2', false)
+    } 
+    console.log(lenOfSides);
+    if (event.target.value !== 0 & lenOfSides[0] !== 0 & lenOfSides[1] !== 0 & lenOfSides[2] !== 0) {
+      console.log("qwe");
+      if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] & lenOfSides[1] < lenOfSides[2] + lenOfSides[0] & lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
+        app.evalCommand(`C=Intersect(c1,c2,1)`)
+        app.evalCommand(`a=Segment(C,B)`);
+        app.evalCommand(`b=Segment(A,C)`);
+      } else {
+        alert("Incorrect input")
+      }
+    }
+  }
 
   const drawOuterCircle = () => {
     let app = window.ggbApplet;
@@ -33,22 +61,6 @@ export const Triangle = () => {
   const handleClickOuterCircle = (event) => {
     setOuterCircle(!outCircle);
   }
-
-  const handleValueOfTextarea = (event) => {
-    setTextAreaString(event.target.value)
-  }
-
-  const drawSketchOfTheProble = () => {
-    let textOfProblem = textAreaString
-    let dict = {}
-    for (let i = 0; i < textOfProblem.length; i++) {
-      if (textOfProblem.charCodeAt(i) > 64 & textOfProblem.charCodeAt(i) < 91) {
-        dict[textOfProblem.charAt(i)] = 1
-      }
-    }
-    console.log(dict);
-  }
-
 
   const HandleValOfInput = (event) => {
     let pointName = event.target.id
@@ -103,9 +115,9 @@ export const Triangle = () => {
         <li onClick={() => { setSides(!sides) }}>Стороны</li>
         {sides ? (
           <div className="input-points">
-            AB:<input className="input-triangle" type="text" id="A" placeholder="dlina AB" onChange={() => { console.log('ab') }} />
-            BC:<input className="input-triangle" type="text" id="B" placeholder="dlina BC" onChange={() => { console.log('ab') }} />
-            AC:<input className="input-triangle" type="text" id="C" placeholder="dlina AC" onChange={() => { console.log('ab') }} />
+            AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={handleLenghtOfSides} />
+            BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={handleLenghtOfSides} />
+            AC:<input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={handleLenghtOfSides} />
           </div>
         ) : (
           console.log()
