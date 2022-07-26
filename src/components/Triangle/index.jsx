@@ -84,14 +84,44 @@ export const Triangle = () => {
       drawOuterCircle();
     }
   }
-
+  const [cords, setCords] = useState(false)
+  const [sides, setSides] = useState(false)
+  const [angles, setAngles] = useState(false)
   return (
     <div className="options-menu">
-      <dl className="optionsList">
+      <ul className="optionList">
+        <li onClick={() => { setCords(!cords) }}>Координаты</li>
+        {cords ? (
+          <div className="input-points">
+            A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} />
+            B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} />
+            C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} />
+          </div>
+        ) : (
+          console.log()
+        )}
+        <li onClick={() => { setSides(!sides) }}>Стороны</li>
+        {sides ? (
+          <div className="input-points">
+            AB:<input className="input-triangle" type="text" id="A" placeholder="dlina AB" onChange={() => { console.log('ab') }} />
+            BC:<input className="input-triangle" type="text" id="B" placeholder="dlina BC" onChange={() => { console.log('ab') }} />
+            AC:<input className="input-triangle" type="text" id="C" placeholder="dlina AC" onChange={() => { console.log('ab') }} />
+          </div>
+        ) : (
+          console.log()
+        )}
+        <li onClick={() => { setAngles(!angles) }}>Углы</li>
+        {angles ? (
+          <div>ugly</div>
+        ) : (
+          console.log()
+        )}
+      </ul>
+      {/* <dl className="optionsList">
         <dt> Координаты
-          <dd><input />tochka</dd>
-          <dd><input />tochka2</dd>
-          <dd><input />tochka3</dd>
+          <dd>A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
+          <dd>B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
+          <dd>C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
         </dt>
         <dt> storony
           <dd><input />ab</dd>
@@ -113,7 +143,7 @@ export const Triangle = () => {
           <dd><input />acb</dd>
           <dd><input />bac</dd>
         </dt>
-      </dl>
+      </dl> */}
       {/* <div className="input-points">
             <h2>Point A</h2>
             <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput}/>
