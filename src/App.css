@@ -121,3 +121,34 @@
   justify-self: flex-end;
   align-self: center;
 }
+
+/* 
+.optionsList {
+  border-radius: 18px;
+  width: 30vw;
+  height: 70vh;
+  margin: auto;
+  margin-top: 50px;
+  justify-self: center;
+  align-self: center;
+  position: relative;
+  overflow-y: scroll;
+}
+
+.optionsList dt {
+  text-align: center;
+  font-weight: 500;
+  position: sticky;
+  top: 0;
+  /* margin-right: 10px;
+  font-size: 4vh;
+  /* margin-top: 20px;
+}
+
+dd {
+  border-bottom: 1px solid #ccc;
+  margin-right: 10px;
+  font-size: 4vh;
+  margin-top: 20px;
+  margin-bottom: 4px;
+} */

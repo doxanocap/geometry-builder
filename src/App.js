@@ -8,7 +8,6 @@ import { Triangle } from './components/Triangle'
 
 function App() {
   const [mode, setMode] = useState()
-  console.log(mode)
   return (
     <div id="check" className="App">
       <div className="main">
