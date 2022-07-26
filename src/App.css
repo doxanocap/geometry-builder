@@ -13,15 +13,19 @@
   border: white 1px solid;
   margin-top: 3.27vh;
   margin-left: 2.5vw;
-  flex-direction: column;
+  /* flex-direction: column;
   align-items: stretch;
-  display: flex;
+  display: flex; */
   color: white;
   width: 30%;
   height: 93.7vh;
-  background-size: cover;
+  /* background-size: cover;
   justify-content: center;
-  align-items: center;
+  align-items: center; */
+  padding: 1vh;
+  display: grid;
+  column-gap: 1vw;
+  row-gap: 1vh;
 }
 
 .right-main-tab {
@@ -74,7 +78,7 @@
 }
 
 .button-circle {
-  background-color:#ffffff;
+  background-color: #ffffff;
   border: 1px black solid;
   border-radius: 15px;
   font-size: 3vh;
@@ -100,4 +104,9 @@
   font-size: 3vh;
   width: 14vw;
   height: 5vh;
+}
+
+.figures {
+  width: 4vw;
+  height: 8vh;
 }
