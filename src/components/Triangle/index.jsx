@@ -131,7 +131,23 @@ export const Triangle = () => {
     app.evalCommand(`A= Intersect(c,b)`)
     app.evalCommand(`B= Intersect(a,c)`)
     app.evalCommand(`C= Intersect(a,b)`)
-    setFlag1(true)
+  }
+  const drawDefaultEquilateralTriangle = () => {
+    app.evalCommand(`a: y=1.41421x`)
+    app.evalCommand(`b: y=- 1.41421x+16`)
+    app.evalCommand(`c: y=0`)
+    app.evalCommand(`A= Intersect(c,b)`)
+    app.evalCommand(`B= Intersect(a,c)`)
+    app.evalCommand(`C= Intersect(a,b)`)
+  }
+
+  const drawDefaultEqualTriangle = () => {
+    app.evalCommand(`a: y=2x`)
+    app.evalCommand(`b: y=-2x+16`)
+    app.evalCommand(`c: y=0`)
+    app.evalCommand(`A= Intersect(c,b)`)
+    app.evalCommand(`B= Intersect(a,c)`)
+    app.evalCommand(`C= Intersect(a,b)`)
   }
 
   const changeAngle = (event) => {
@@ -176,8 +192,8 @@ export const Triangle = () => {
       </ul>
       <div className="input-points">
         <button onClick={drawDefaultTriangle} >Треугольник</button>
-        <button>Равнобед</button>
-        <button>РавноСтр</button>    
+        <button onClick={drawDefaultEqualTriangle}>Равнобед</button>
+        <button onClick={drawDefaultEquilateralTriangle}>РавноСтр</button>    
       </div>
         <div className="input-points">
           <h2>Angle A</h2>
