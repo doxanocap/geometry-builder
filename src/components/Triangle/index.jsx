@@ -9,7 +9,7 @@ export const Triangle = () => {
   const [middlepoints] = useState([[0, 0], [0, 0]]);
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
-  const [flag1, setFlag1] = useState(false);
+  const [anglesChoose, setAnglesChoose] = useState(false);
   const app = window.ggbApplet
 
 
@@ -106,17 +106,17 @@ export const Triangle = () => {
 
   // <------ ANGLES OF TIRANGLE
 
-  
+
   const handleAnglesOfTriangle = (event) => {
     let angleName = event.target.id
-    if ( angleName === "bac" & event.target.value !== 0) {
+    if (angleName === "bac" & event.target.value !== 0) {
       app.evalCommand(`A=(0,0)`)
       app.evalCommand(`X=(10,0)`)
       app.evalCommand(`l=Segment(A,X})`)
       app.evalCommand(`C=Rotate(X,${event.target.value}°,A)`)
       app.evalCommand(`b=Segment(A,C)`)
-    } 
-  } 
+    }
+  }
 
 
   // ------>
@@ -148,6 +148,7 @@ export const Triangle = () => {
     app.evalCommand(`A= Intersect(c,b)`)
     app.evalCommand(`B= Intersect(a,c)`)
     app.evalCommand(`C= Intersect(a,b)`)
+    setAnglesChoose(true)
   }
 
   const changeAngle = (event) => {
@@ -193,20 +194,26 @@ export const Triangle = () => {
       <div className="input-points">
         <button onClick={drawDefaultTriangle} >Треугольник</button>
         <button onClick={drawDefaultEqualTriangle}>Равнобед</button>
-        <button onClick={drawDefaultEquilateralTriangle}>РавноСтр</button>    
+        <button onClick={drawDefaultEquilateralTriangle}>РавноСтр</button>
       </div>
-        <div className="input-points">
-          <h2>Angle A</h2>
-          <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={changeAngle}/>
-        </div>
-        <div className="input-points">
-          <h2>Angle B</h2>
-          <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={changeAngle}/>
-        </div>
+      {(anglesChoose) ? (
+        <>
           <div className="input-points">
-          <h2>Angle C</h2>
-          <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={changeAngle}/>
-        </div>
+            <h2>Angle A</h2>
+            <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={changeAngle} />
+          </div>
+          <div className="input-points">
+            <h2>Angle B</h2>
+            <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={changeAngle} />
+          </div>
+          <div className="input-points">
+            <h2>Angle C</h2>
+            <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={changeAngle} />
+          </div>
+        </>
+      ) : (
+        <div>пусто</div>
+      )}
     </div >
   );
 }
