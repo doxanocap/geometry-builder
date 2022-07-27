@@ -7,7 +7,7 @@ export const Triangle = () => {
   const [points] = useState([[0, 0], [0, 0], [0, 0]]);
   const [outCircle, setOuterCircle] = useState(false);
   const [middlepoints] = useState([[0, 0], [0, 0]]);
-  const [lenOfSides] = useState([0,0,0])
+  const [lenOfSides] = useState([0, 0, 0])
   const app = window.ggbApplet
 
   const handleLenghtOfSides = (event) => {
@@ -25,7 +25,7 @@ export const Triangle = () => {
       lenOfSides[2] = parseInt(event.target.value)
       app.evalCommand(`c2: Circle(B,${event.target.value})`)
       app.setVisible('c2', false)
-    } 
+    }
     console.log(lenOfSides);
     if (event.target.value !== 0 & lenOfSides[0] !== 0 & lenOfSides[1] !== 0 & lenOfSides[2] !== 0) {
       console.log("qwe");
@@ -124,53 +124,15 @@ export const Triangle = () => {
         )}
         <li onClick={() => { setAngles(!angles) }}>Углы</li>
         {angles ? (
-          <div>ugly</div>
+          <div className="input-points">
+            A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={handleLenghtOfSides} />
+            B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={handleLenghtOfSides} />
+            C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={handleLenghtOfSides} />
+          </div>
         ) : (
           console.log()
         )}
       </ul>
-      {/* <dl className="optionsList">
-        <dt> Координаты
-          <dd>A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-          <dd>B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-          <dd>C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-        </dt>
-        <dt> storony
-          <dd><input />ab</dd>
-          <dd><input />bc</dd>
-          <dd><input />ac</dd>
-        </dt>
-        <dt> ugly
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-        <dt> another
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-        <dt> another one
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-      </dl> */}
-      {/* <div className="input-points">
-            <h2>Point A</h2>
-            <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="input-points">
-            <h2>Point B</h2>
-            <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="input-points">
-            <h2>Point C</h2>
-            <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="button-circle-div">
-            <button className={"button-circle"} onClick={handleClickOuterCircle}>Draw circle</button>
-        </div> */}
     </div >
   );
 }
