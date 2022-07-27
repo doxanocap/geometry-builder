@@ -8,11 +8,9 @@ export const Triangle = () => {
   const [outCircle, setOuterCircle] = useState(false);
   const [middlepoints] = useState([[0, 0], [0, 0]]);
   const [lenOfSides] = useState([0, 0, 0])
-  const [cords, setCords] = useState(false)
-  const [sides, setSides] = useState(false)
-  const [angles, setAngles] = useState(false)
+  const [given, setGiven] = useState(null)
   const app = window.ggbApplet
-  
+
 
   //<------- LENGTH OF SIDES 
   const handleLenghtOfSides = (event) => {
@@ -109,10 +107,10 @@ export const Triangle = () => {
 
   const handleAnglesOfTriangle = (event) => {
     let angleName = event.target.value
-    if ( angleName === "bac" && event.target.value !== 0) {
-        
-    } 
-  } 
+    if (angleName === "bac" && event.target.value !== 0) {
+
+    }
+  }
 
   // ------>
 
@@ -120,8 +118,8 @@ export const Triangle = () => {
   return (
     <div className="options-menu">
       <ul className="optionList">
-        <li onClick={() => { setCords(!cords) }}>Координаты</li>
-        {cords ? (
+        <li onClick={() => { setGiven('cords') }}>Координаты</li>
+        {given === 'cords' ? (
           <div className="input-points">
             A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfCoords} />
             B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfCoords} />
@@ -130,8 +128,8 @@ export const Triangle = () => {
         ) : (
           console.log()
         )}
-        <li onClick={() => { setSides(!sides) }}>Стороны</li>
-        {sides ? (
+        <li onClick={() => { setGiven('sides') }}>Стороны</li>
+        {given === 'sides' ? (
           <div className="input-points">
             AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={handleLenghtOfSides} />
             BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={handleLenghtOfSides} />
@@ -140,8 +138,8 @@ export const Triangle = () => {
         ) : (
           console.log()
         )}
-        <li onClick={() => { setAngles(!angles) }}>Углы</li>
-        {angles ? (
+        <li onClick={() => { setGiven('angles') }}>Углы</li>
+        {given === 'angles' ? (
           <div className="input-points">
             A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={handleLenghtOfSides} />
             B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={handleLenghtOfSides} />
