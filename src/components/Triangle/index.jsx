@@ -166,7 +166,7 @@ export const Triangle = () => {
             A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfCoords} />
             B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfCoords} />
             C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfCoords} />
-          </div>
+          </div>  
         ) : (
           console.log()
         )}
