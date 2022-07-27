@@ -8,8 +8,13 @@ export const Triangle = () => {
   const [outCircle, setOuterCircle] = useState(false);
   const [middlepoints] = useState([[0, 0], [0, 0]]);
   const [lenOfSides] = useState([0, 0, 0])
+  const [cords, setCords] = useState(false)
+  const [sides, setSides] = useState(false)
+  const [angles, setAngles] = useState(false)
   const app = window.ggbApplet
+  
 
+  //<------- LENGTH OF SIDES 
   const handleLenghtOfSides = (event) => {
     let app = window.ggbApplet;
     if (event.target.id === "ab" & event.target.value !== 0) {
@@ -38,31 +43,10 @@ export const Triangle = () => {
       }
     }
   }
+  // ------>
 
-  const drawOuterCircle = () => {
-    let app = window.ggbApplet;
-    //AB ---- middle point ---- M1 ----- [1,2] ---- A[1,1] ---- B[1,3]
-    middlepoints[0] = [(points[0][0] + points[1][0]) / 2, (points[0][1] + points[1][1]) / 2]
-    //AC ---- middle point ---- M2 ----- [2,1]
-    middlepoints[1] = [(points[0][0] + points[2][0]) / 2, (points[0][1] + points[2][1]) / 2]
-    console.log(middlepoints, points[0][0], points[1][0], (1 + 1) / 2);
-    app.evalCommand(`M1=(${middlepoints[0][0]},${middlepoints[0][1]})`)
-    app.setVisible('M1', false)
-    app.evalCommand(`M2=(${middlepoints[1][0]},${middlepoints[1][1]})`)
-    app.setVisible('M2', false)
-    app.evalCommand(`i: PerpendicularLine(M1,d)`)
-    app.setVisible('i', false)
-    app.evalCommand(`j: PerpendicularLine(M2,f)`)
-    app.setVisible('j', false)
-    app.evalCommand(`O = Intersect(i,j)`)
-    app.evalCommand(`Circle(O,A)`)
-  }
-
-  const handleClickOuterCircle = (event) => {
-    setOuterCircle(!outCircle);
-  }
-
-  const HandleValOfInput = (event) => {
+  // <------ Coordinates and circle 
+  const HandleValOfCoords = (event) => {
     let pointName = event.target.id
     let inputStr = event.target.value
     let app = window.ggbApplet;
@@ -88,6 +72,10 @@ export const Triangle = () => {
     }
   }
 
+  const handleClickOuterCircle = (event) => {
+    setOuterCircle(!outCircle);
+  }
+
   if (f1 === true & f2 === true & f3 === true) {
     app.evalCommand(`f=Segment(A,C)`);
     app.evalCommand(`d=Segment(A,B)`);
@@ -96,18 +84,48 @@ export const Triangle = () => {
       drawOuterCircle();
     }
   }
-  const [cords, setCords] = useState(false)
-  const [sides, setSides] = useState(false)
-  const [angles, setAngles] = useState(false)
+
+  const drawOuterCircle = () => {
+    let app = window.ggbApplet;
+    //AB ---- middle point ---- M1 ----- [1,2] ---- A[1,1] ---- B[1,3]
+    middlepoints[0] = [(points[0][0] + points[1][0]) / 2, (points[0][1] + points[1][1]) / 2]
+    //AC ---- middle point ---- M2 ----- [2,1]
+    middlepoints[1] = [(points[0][0] + points[2][0]) / 2, (points[0][1] + points[2][1]) / 2]
+    console.log(middlepoints, points[0][0], points[1][0], (1 + 1) / 2);
+    app.evalCommand(`M1=(${middlepoints[0][0]},${middlepoints[0][1]})`)
+    app.setVisible('M1', false)
+    app.evalCommand(`M2=(${middlepoints[1][0]},${middlepoints[1][1]})`)
+    app.setVisible('M2', false)
+    app.evalCommand(`i: PerpendicularLine(M1,d)`)
+    app.setVisible('i', false)
+    app.evalCommand(`j: PerpendicularLine(M2,f)`)
+    app.setVisible('j', false)
+    app.evalCommand(`O = Intersect(i,j)`)
+    app.evalCommand(`Circle(O,A)`)
+  }
+  // -----> 
+
+  // <------ ANGLES OF TIRANGLE
+
+  const handleAnglesOfTriangle = (event) => {
+    let angleName = event.target.value
+    if ( angleName === "bac" && event.target.value !== 0) {
+        
+    } 
+  } 
+
+  // ------>
+
+
   return (
     <div className="options-menu">
       <ul className="optionList">
         <li onClick={() => { setCords(!cords) }}>Координаты</li>
         {cords ? (
           <div className="input-points">
-            A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} />
-            B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} />
-            C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} />
+            A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfCoords} />
+            B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfCoords} />
+            C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfCoords} />
           </div>
         ) : (
           console.log()
