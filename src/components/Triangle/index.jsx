@@ -129,48 +129,6 @@ export const Triangle = () => {
           console.log()
         )}
       </ul>
-      {/* <dl className="optionsList">
-        <dt> Координаты
-          <dd>A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-          <dd>B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-          <dd>C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput} /></dd>
-        </dt>
-        <dt> storony
-          <dd><input />ab</dd>
-          <dd><input />bc</dd>
-          <dd><input />ac</dd>
-        </dt>
-        <dt> ugly
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-        <dt> another
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-        <dt> another one
-          <dd><input />abc</dd>
-          <dd><input />acb</dd>
-          <dd><input />bac</dd>
-        </dt>
-      </dl> */}
-      {/* <div className="input-points">
-            <h2>Point A</h2>
-            <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="input-points">
-            <h2>Point B</h2>
-            <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="input-points">
-            <h2>Point C</h2>
-            <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfInput}/>
-          </div>
-          <div className="button-circle-div">
-            <button className={"button-circle"} onClick={handleClickOuterCircle}>Draw circle</button>
-        </div> */}
     </div >
   );
 }
