@@ -10,7 +10,7 @@ function App() {
   const [mode, setMode] = useState()
   return (
     <div id="check" className="App">
-      <li>blabla</li>
+      <li>blatla</li>
       <div className="main">
         <div className="left-regulatins-zones">
           <div className='figures'>
