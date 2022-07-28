@@ -144,9 +144,10 @@ export const Triangle = () => {
     app.evalCommand(`ac=Segment(C,A)`)
   } 
 
-  const changeAngle = (event) => {
+  const changeAngleOfEquilateral = (event) => {
     let angle = parseInt(event.target.value)
-    if (event.target.id === "bac'" & angle !== 0) {
+    if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
+      console.log(angle)
       if (angle > 0 & angle <= 75) {
         app.evalCommand(`b1 = Rotate(c,${360-(75-angle)}°,A)`)
         app.evalCommand(`a1 = Rotate(a,${(75-angle)}°,C)`)
@@ -160,6 +161,8 @@ export const Triangle = () => {
         app.setVisible('b1', false)
         app.setVisible('a1', false)
       }
+    } else if (event.target.id === "abc1" && angle !== 0) {
+      
     }
   }
   // -------------------------------------
@@ -206,15 +209,15 @@ export const Triangle = () => {
         <>
           <div className="input-points">
             <h2>Angle A</h2>
-            <input className="input-triangle" type="text" id="bac'" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
           </div>
           <div className="input-points">
             <h2>Angle B</h2>
-            <input className="input-triangle" type="text" id="abc'" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
           </div>
           <div className="input-points">
             <h2>Angle C</h2>
-            <input className="input-triangle" type="text" id="acb'" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
           </div>
         </>
       ) : (

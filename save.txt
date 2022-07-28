@@ -1,4 +1,5 @@
-// ------------------------------------->
+
+  // ------------------------------------->
   
   const drawDefaultTriangle = () => {
     setAnglesChoose(true)
@@ -38,9 +39,10 @@
     app.evalCommand(`ac=Segment(C,A)`)
   } 
 
-  const changeAngle = (event) => {
+  const changeAngleOfEquilateral = (event) => {
     let angle = parseInt(event.target.value)
-    if (event.target.id === "bac'" & angle !== 0) {
+    if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
+      console.log(angle)
       if (angle > 0 & angle <= 75) {
         app.evalCommand(`b1 = Rotate(c,${360-(75-angle)}°,A)`)
         app.evalCommand(`a1 = Rotate(a,${(75-angle)}°,C)`)
@@ -54,6 +56,7 @@
         app.setVisible('b1', false)
         app.setVisible('a1', false)
       }
+    } else if (event.target.id === "abc1" && angle !== 0) {
+      
     }
   }
-  // -------------------------------------
