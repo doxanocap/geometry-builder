@@ -3,6 +3,7 @@ import { useState } from "react";
 export const Triangle = () => {
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
+  const [type, setType] = useState(null)
   const [anglesChoose, setanglesChoose] = useState(false)
   const [inputs] = useState({
     // sides: [A, B, C]
@@ -10,6 +11,8 @@ export const Triangle = () => {
     // angles [A, B, C]
     angles: [NaN, NaN, NaN]
   })
+  const [check1, toggleCheck1] = useState(false)
+  const [check2, toggleCheck2] = useState(false)
 
   const inputHandler = (event) => {
     const sideIDs = ['bc', 'ac', 'ab']
@@ -18,11 +21,13 @@ export const Triangle = () => {
     const inputVal = event.target.value
     if (sideIDs.includes(inputId)) {
       const side = sideIDs.indexOf(inputId)
+      inputs.sides[side] = parseInt(inputVal)
       handleLenghtOfSides(side, parseInt(inputVal))
     } else {
       const angle = angleIDs.indexOf(inputId)
       inputs.angles[angle] = parseInt(inputVal)
     }
+    console.log(inputs.sides, inputs.angles)
   }
 
   const app = window.ggbApplet
@@ -54,10 +59,11 @@ export const Triangle = () => {
       }
     }
   }
-  
+
   // --------------------Set triangle and change angles----------------->
 
   const drawDefaultTriangle = () => {
+    setType('default')
     setanglesChoose(true);
     app.evalCommand(`c: y=2x`)
     app.evalCommand(`a: y=-2x+16`)
@@ -66,14 +72,16 @@ export const Triangle = () => {
   }
 
   const drawDefaultEquilateralTriangle = () => {
+    setType('equilateral')
     setanglesChoose(true);
     app.evalCommand(`c: y=3.72x`)
-    app.evalCommand(`a: y=-3.72x+32`)
+    app.evalCommand(`a: y=-3.72x+14`)
     app.evalCommand(`b: y=0`)
     defaultOperationsToDraw();
   }
 
   const drawDefaultEqualTriangle = () => {
+    setType('equal')
     setanglesChoose(true);
     app.evalCommand(`c: y=1.732x`)
     app.evalCommand(`a: y=-1.732x+15.8`)
@@ -81,7 +89,7 @@ export const Triangle = () => {
     defaultOperationsToDraw();
   }
 
-  function defaultOperationsToDraw() {
+  const defaultOperationsToDraw = () => {
     app.setVisible('a', false)
     app.setVisible('b', false)
     app.setVisible('c', false)
@@ -101,77 +109,91 @@ export const Triangle = () => {
     if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
       applyAnglesToEquilateral(angle);
     } else if (event.target.id === "abc1" && angle !== 0) {
-      let topAngle = parseInt(event.target.value) 
-      angle = (180 - topAngle) / 2 
+      let topAngle = parseInt(event.target.value)
+      angle = (180 - topAngle) / 2
       applyAnglesToEquilateral(angle);
     }
   }
 
   const applyAnglesToEquilateral = (angle) => {
-      if (angle > 0 & angle <= 75) {
-        app.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
-        app.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
-        app.evalCommand(`B = Intersect(a1,b1)`)
-        app.setVisible('b1', false)
-        app.setVisible('a1', false)
-      } else if (angle < 90) {
-        app.evalCommand(`b1 = Rotate(c,${angle - 75}°,A)`)
-        app.evalCommand(`a1 = Rotate(a,${360 - (angle - 75)}°,C)`)
-        app.evalCommand(`B = Intersect(a1,b1)`)
-        app.setVisible('b1', false)
-        app.setVisible('a1', false)
-      }
+    if (angle > 0 & angle <= 75) {
+      app.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
+      app.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
+      app.evalCommand(`B = Intersect(a1,b1)`)
+      app.setVisible('b1', false)
+      app.setVisible('a1', false)
+    } else if (angle < 90) {
+      app.evalCommand(`b1 = Rotate(c,${angle - 75}°,A)`)
+      app.evalCommand(`a1 = Rotate(a,${360 - (angle - 75)}°,C)`)
+      app.evalCommand(`B = Intersect(a1,b1)`)
+      app.setVisible('b1', false)
+      app.setVisible('a1', false)
+    }
   }
 
   // -------------------------------------const sideIDs = ['bc', 'ac', 'ab']
 
   return (
     <div className="options-menu">
-      <div className="input-points">
-        <button onClick={drawDefaultTriangle} >Треугольник</button>
-        <button onClick={drawDefaultEquilateralTriangle}>Равнобед</button>
-        <button onClick={drawDefaultEqualTriangle}>РавноСтр</button>
-      </div>
-      <ul className="optionList">
-        <li onClick={() => { setGiven('sides') }}>Стороны</li>
-        {given === 'sides' ? (
-          <div className="input-points">
-            AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
-            BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
-            AC:<input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
-          </div>
-        ) : (
-          console.log()
-        )}
-        <li onClick={() => { setGiven('angles') }}>Углы</li>
-        {given === 'angles' ? (
-          <div className="input-points">
-            A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={inputHandler} />
-            B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={inputHandler} />
-            C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={inputHandler} />
-          </div>
-        ) : (
-          console.log()
-        )}
-      </ul>
-      {(anglesChoose) ? (
-        <>
-          <div className="input-points">
-            <h2>Angle A</h2>
-            <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
-          </div>
-          <div className="input-points">
-            <h2>Angle B</h2>
-            <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
-          </div>
-          <div className="input-points">
-            <h2>Angle C</h2>
-            <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
-          </div>
-        </>
-      ) : (
-        <div>пусто</div>
-      )}
+      <button onClick={drawDefaultTriangle} >Default</button>
+      <button onClick={drawDefaultEquilateralTriangle}>Equilateral</button>
+      <button onClick={drawDefaultEqualTriangle}>Equal</button>
+      {type === 'default' ? (
+        <ul className="optionList">
+          <li><input type='checkbox' onChange={() => { toggleCheck1(!check1) }} /> Стороны
+            <div>Тут крч функция на углы не робит</div>
+            {check1 ? (
+              <div className="input-points">
+                AB: <input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
+                BC: <input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
+                AC: <input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
+              </div>
+            ) : (null)}
+
+          </li>
+          <li><input type='checkbox' onChange={() => { toggleCheck2(!check2) }} /> Углы
+            {check2 ? (
+              <div className="input-points">
+                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+              </div>
+            ) : (null)}
+
+          </li>
+        </ul>
+      ) : (null)}
+      {type === 'equilateral' ? (
+        <ul className="optionList">
+          <li><input type='checkbox' onChange={() => { toggleCheck1(!check1) }} /> Стороны
+            {check1 ? (
+              <div className="input-points">
+                BC: <input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
+                AB: <input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
+                AC: <input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
+              </div>
+            ) : (null)}
+
+          </li>
+          <li><input type='checkbox' onChange={() => { toggleCheck2(!check2) }} /> Углы
+            {check2 ? (
+              <div className="input-points">
+                A: <input className="input-triangle" type="text" id="bac" placeholder="(x,y)" onChange={inputHandler} />
+                B: <input className="input-triangle" type="text" id="abc" placeholder="(x,y)" onChange={inputHandler} />
+                C: <input className="input-triangle" type="text" id="acb" placeholder="(x,y)" onChange={inputHandler} />
+              </div>
+            ) : (null)}
+
+          </li>
+        </ul>
+      ) : (null)}
+      {type === 'equal' ? (
+        <ul className="optionList">
+          <li>ну икуал</li>
+        </ul>
+      ) : (null)}
+
+
     </div >
   );
 }

@@ -8,7 +8,7 @@ import { Circle } from './components/Circle'
 
 
 function App() {
-  const [mode, setMode] = useState()
+  const [mode, setMode] = useState('triangle')
   return (
     <div id="check" className="App">
       <div className="main">

@@ -1,0 +1,41 @@
+{/* <ul className="optionList"> */}
+      {/* <li onClick={() => { setGiven('sides') }}>Стороны</li>
+        {given === 'sides' ? (
+          <div className="input-points">
+            AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
+            BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
+            AC:<input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
+          </div>
+        ) : (
+          console.log()
+        )}
+        <li onClick={() => { setGiven('angles') }}>Углы</li>
+        {given === 'angles' ? (
+          <div className="input-points">
+            A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={inputHandler} />
+            B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={inputHandler} />
+            C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={inputHandler} />
+          </div>
+        ) : (
+          console.log()
+        )} */}
+      {/* </ul> */}
+
+{/* {(anglesChoose) ? (
+        <>
+          <div className="input-points">
+            <h2>Angle A</h2>
+            <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+          </div>
+          <div className="input-points">
+            <h2>Angle B</h2>
+            <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+          </div>
+          <div className="input-points">
+            <h2>Angle C</h2>
+            <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+          </div>
+        </>
+      ) : (
+        <div>пусто</div>
+      )} */}

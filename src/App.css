@@ -33,11 +33,10 @@
 }
 
 .input-points {
-  margin: 25px 0;
+  margin: 10px 0;
   display: flex;
-  text-align: center;
-  background-size: cover;
-  justify-content: center;
+  text-align: justify;
+  justify-content: flex-end;
   align-items: center;
   height: 10vh;
   width: 25vw;
@@ -45,8 +44,9 @@
 
 .input-triangle {
   font-size: 15px;
-  margin: 15px;
-  width: 7vw;
+  margin: 5px 10px;
+  padding: 5px;
+  width: 5vw;
   height: 4vh;
 }
 
@@ -120,33 +120,14 @@
   align-self: center;
 }
 
-/* 
-.optionsList {
-  border-radius: 18px;
-  width: 30vw;
-  height: 70vh;
-  margin: auto;
-  margin-top: 50px;
-  justify-self: center;
-  align-self: center;
-  position: relative;
-  overflow-y: scroll;
+.optionList {
+  text-align: left;
 }
 
-.optionsList dt {
-  text-align: center;
-  font-weight: 500;
-  position: sticky;
-  top: 0;
-  /* margin-right: 10px;
-  font-size: 4vh;
-  /* margin-top: 20px;
+button {
+  margin: 20px 5px;
 }
 
-dd {
-  border-bottom: 1px solid #ccc;
-  margin-right: 10px;
-  font-size: 4vh;
-  margin-top: 20px;
-  margin-bottom: 4px;
-} */
+li {
+  list-style-type: none;
+}
