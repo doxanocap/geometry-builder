@@ -111,13 +111,22 @@ export const Triangle = () => {
 
   const anglesOfDefault = (event) => {
     let angle = parseInt(event.target.value)
-
-    if ((event.target.id === "bac1") & angle !== 0) {
-      applyAnglesToDefault(angle);
+    if ((event.target.id === "bac1") & angle !== 0) {     
+        let currentAngleCAB = parseInt(parseFloat(window.ggbApplet.getValue(`alpha`)) * 180 / Math.PI)  
+        console.log(currentAngleCAB);
+        if ( angle > 0 && angle < currentAngleCAB) {
+          window.ggbApplet.evalCommand(`b1 = Rotate(c,${360-(currentAngleCAB-angle)}°,A)`)
+           
+          // window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
+          // defaultOperationsToDraw();
+        } else if (angle < 180) {
+          window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle + currentAngleCAB}°,A)`) 
+          window.ggbApplet.setVisible('b1', false)
+          window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
+          defaultOperationsToDraw();
+        }
     } else if (event.target.id === "abc1" && angle !== 0) {
-      applyAnglesToDefault(angle);
     } else if (angle !== 0) {
-      applyAnglesToDefault(angle);
     }
   }
 
@@ -185,11 +194,11 @@ export const Triangle = () => {
             {check2 ? (
               <div className="input-points">
                 A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)"
-                  onChange={console.log('hehe')} />
+                  onChange={anglesOfDefault} />
                 B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)"
-                  onChange={console.log('haha')} />
+                  onChange={anglesOfDefault} />
                 C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)"
-                  onChange={console.log('h')} />
+                  onChange={anglesOfDefault} />
               </div>
             ) : (null)}
 
