@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Triangle = () => { 
+export const Triangle = () => {
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
   const [type, setType] = useState(null)
@@ -61,6 +61,8 @@ export const Triangle = () => {
 
   const drawDefaultTriangle = () => {
     setType('default');
+    toggleCheck1(false)
+    toggleCheck2(false)
     setanglesChoose(true);
     window.ggbApplet.evalCommand(`c: y=2x`)
     window.ggbApplet.evalCommand(`a: y=-2x+16`)
@@ -69,7 +71,9 @@ export const Triangle = () => {
   }
 
   const drawDefaultEquilateralTriangle = () => {
-    setType('equilateral');  
+    setType('equilateral');
+    toggleCheck1(false)
+    toggleCheck2(false)
     setanglesChoose(true);
     window.ggbApplet.evalCommand(`c: y=3.72x`);
     window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
@@ -79,6 +83,8 @@ export const Triangle = () => {
 
   const drawDefaultEqualTriangle = () => {
     setType('equal')
+    toggleCheck1(false)
+    toggleCheck2(false)
     setanglesChoose(true);
     window.ggbApplet.evalCommand(`c: y=1.732x`)
     window.ggbApplet.evalCommand(`a: y=-1.732x+15.8`)
@@ -150,12 +156,12 @@ export const Triangle = () => {
 
   return (
     <div className="options-menu">
-      <button onClick={drawDefaultTriangle} >Default</button>
+      <button onClick={drawDefaultTriangle}>Default</button>
       <button onClick={drawDefaultEquilateralTriangle}>Equilateral</button>
       <button onClick={drawDefaultEqualTriangle}>Equal</button>
       {type === 'default' ? (
         <ul className="optionList">
-          <li><input type='checkbox' onChange={() => { toggleCheck1(!check1) }} /> Стороны
+          <li><input type='checkbox' checked={check1} onChange={() => { toggleCheck1(!check1) }} /> Стороны
             <div>Тут крч функция на углы не робит</div>
             {check1 ? (
               <div className="input-points">
@@ -166,12 +172,15 @@ export const Triangle = () => {
             ) : (null)}
 
           </li>
-          <li><input type='checkbox' onChange={() => { toggleCheck2(!check2) }} /> Углы
+          <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={anglesOfDefault} />
-                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={anglesOfDefault} />
-                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={anglesOfDefault} />
+                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)"
+                  onChange={changeAngleOfEquilateral} />
+                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)"
+                  onChange={changeAngleOfEquilateral} />
+                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)"
+                  onChange={changeAngleOfEquilateral} />
               </div>
             ) : (null)}
 
@@ -180,7 +189,7 @@ export const Triangle = () => {
       ) : (null)}
       {type === 'equilateral' ? (
         <ul className="optionList">
-          <li><input type='checkbox' onChange={() => { toggleCheck1(!check1) }} /> Стороны
+          <li><input type='checkbox' checked={check1} onChange={() => { toggleCheck1(!check1) }} /> Стороны
             {check1 ? (
               <div className="input-points">
                 BC: <input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
@@ -190,7 +199,7 @@ export const Triangle = () => {
             ) : (null)}
 
           </li>
-          <li><input type='checkbox' onChange={() => { toggleCheck2(!check2) }} /> Углы
+          <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
                 A: <input className="input-triangle" type="text" id="bac" placeholder="(x,y)" onChange={inputHandler} />
@@ -209,6 +218,6 @@ export const Triangle = () => {
       ) : (null)}
 
 
-    </div >
+    </div>
   );
 }
