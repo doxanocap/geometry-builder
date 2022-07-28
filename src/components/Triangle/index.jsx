@@ -13,6 +13,7 @@ export const Triangle = () => {
   })
   const [check1, toggleCheck1] = useState(false)
   const [check2, toggleCheck2] = useState(false)
+  const [angValues, setAngValues] = useState([0, 0, 0])
 
   const inputHandler = (event) => {
     const sideIDs = ['bc', 'ac', 'ab']
@@ -25,14 +26,15 @@ export const Triangle = () => {
       handleLenghtOfSides(side, parseInt(inputVal))
     } else {
       const angle = angleIDs.indexOf(inputId)
+      event.target.value = inputVal
       inputs.angles[angle] = parseInt(inputVal)
+      anglesOfEquilateral(angle, parseInt(inputVal))
     }
-    console.log(inputs.sides, inputs.angles)
+
   }
 
   //<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
-    console.log(side, sideLength)
     if (sideLength === 0) {
       alert('nonono')
     } else {
@@ -120,23 +122,30 @@ export const Triangle = () => {
   }
 
   const applyAnglesToDefault = (angle) => {
-    console.log(angle);
     window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle}°,A)`)
   }
 
-  const anglesOfEquilateral = (event) => {
-    let angle = parseInt(event.target.value)
-    if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
-      applyAnglesToEquilateral(angle);
-    } else if (event.target.id === "abc1" && angle !== 0) {
-      let topAngle = parseInt(event.target.value)
-      angle = (180 - topAngle) / 2
-      applyAnglesToEquilateral(angle);
+  const anglesOfEquilateral = (angle, angleVal) => {
+
+    if ([0, 2].includes(angle) & angleVal !== 0) {
+      applyAnglesToEquilateral(angleVal);
+      if (!Number.isNaN(angleVal)) {
+        setAngValues([angleVal, (180 - 2 * angleVal), angleVal])
+      } else {
+        setAngValues([0, 0, 0])
+      }
+    } else if (angleVal !== 0) {
+      if (!Number.isNaN(angleVal)) {
+        setAngValues([(180 - angleVal) / 2, angleVal, (180 - angleVal) / 2])
+      } else {
+        setAngValues([0, 0, 0])
+      }
+      angleVal = (180 - angleVal) / 2
+      applyAnglesToEquilateral(angleVal);
     }
   }
 
   const applyAnglesToEquilateral = (angle) => {
-    console.log("dalbayob");
     if (angle > 0 & angle <= 75) {
       window.ggbApplet.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
       window.ggbApplet.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
@@ -176,11 +185,11 @@ export const Triangle = () => {
             {check2 ? (
               <div className="input-points">
                 A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)"
-                  onChange={changeAngleOfEquilateral} />
+                  onChange={console.log('hehe')} />
                 B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)"
-                  onChange={changeAngleOfEquilateral} />
+                  onChange={console.log('haha')} />
                 C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)"
-                  onChange={changeAngleOfEquilateral} />
+                  onChange={console.log('h')} />
               </div>
             ) : (null)}
 
@@ -202,9 +211,9 @@ export const Triangle = () => {
           <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-                A: <input className="input-triangle" type="text" id="bac" placeholder="(x,y)" onChange={inputHandler} />
-                B: <input className="input-triangle" type="text" id="abc" placeholder="(x,y)" onChange={inputHandler} />
-                C: <input className="input-triangle" type="text" id="acb" placeholder="(x,y)" onChange={inputHandler} />
+                A: <input className="input-triangle" type="text" id="bac" placeholder="(x,y)" onChange={inputHandler} value={angValues[0]} />
+                B: <input className="input-triangle" type="text" id="abc" placeholder="(x,y)" onChange={inputHandler} value={angValues[1]} />
+                C: <input className="input-triangle" type="text" id="acb" placeholder="(x,y)" onChange={inputHandler} value={angValues[2]} />
               </div>
             ) : (null)}
 
