@@ -104,56 +104,64 @@ export const Triangle = () => {
   }
   // ------------------------------------> 
 
-  // <-------------------- ANGLES OF TIRANGLE
-
-  const handleAnglesOfTriangle = (event) => {
-    let angleName = event.target.id
-    if (angleName === "bac" & event.target.value !== 0) {
-      app.evalCommand(`A=(0,0)`)
-      app.evalCommand(`X=(10,0)`)
-      app.evalCommand(`l=Segment(A,X})`)
-      app.evalCommand(`C=Rotate(X,${event.target.value}°,A)`)
-      app.evalCommand(`b=Segment(A,C)`)
-    }
-  }
-
-  // ------------------------------------->
-
-
   // ------------------------------------->
   
   const drawDefaultTriangle = () => {
-    app.evalCommand(`a: y=2x`)
-    app.evalCommand(`b: y=-2x+16`)
-    app.evalCommand(`c: y=1/5x`)
-    app.evalCommand(`A= Intersect(c,b)`)
-    app.evalCommand(`B= Intersect(a,c)`)
-    app.evalCommand(`C= Intersect(a,b)`)
+    setAnglesChoose(true)
+    app.evalCommand(`c: y=2x`)
+    app.evalCommand(`a: y=-2x+16`)
+    app.evalCommand(`b: y=1/5x`)
+    defaultOperationsToDraw();
   }
 
   const drawDefaultEquilateralTriangle = () => {
-    app.evalCommand(`a: y=1.41421x`)
-    app.evalCommand(`b: y=- 1.41421x+16`)
-    app.evalCommand(`c: y=0`)
-    app.evalCommand(`A= Intersect(c,b)`)
-    app.evalCommand(`B= Intersect(a,c)`)
-    app.evalCommand(`C= Intersect(a,b)`)
+    setAnglesChoose(true);
+    app.evalCommand(`c: y=3.72x`)
+    app.evalCommand(`a: y=-3.72x+32`)
+    app.evalCommand(`b: y=0`)
+    defaultOperationsToDraw();
   }
 
   const drawDefaultEqualTriangle = () => {
-    app.evalCommand(`a: y=2x`)
-    app.evalCommand(`b: y=-2x+16`)
-    app.evalCommand(`c: y=0`)
+    app.evalCommand(`c: y=1.732x`)
+    app.evalCommand(`a: y=-1.732x+15.8`)
+    app.evalCommand(`b: y=0`)
+    defaultOperationsToDraw();
+  }
+
+  function defaultOperationsToDraw() {
+    app.setVisible('a', false)
+    app.setVisible('b', false)
+    app.setVisible('c', false)
     app.evalCommand(`A= Intersect(c,b)`)
     app.evalCommand(`B= Intersect(a,c)`)
     app.evalCommand(`C= Intersect(a,b)`)
-    setAnglesChoose(true)
-  }
+    app.evalCommand(`alpha = Angle(C,A,B)`)
+    app.evalCommand(`betta = Angle(A,B,C)`)
+    app.evalCommand(`gamma = Angle(B,C,A)`)
+    app.evalCommand(`ab=Segment(A,B)`)
+    app.evalCommand(`bc=Segment(B,C)`)
+    app.evalCommand(`ac=Segment(C,A)`)
+  } 
 
   const changeAngle = (event) => {
-
+    let angle = parseInt(event.target.value)
+    if (event.target.id === "bac'" & angle !== 0) {
+      if (angle > 0 & angle <= 75) {
+        app.evalCommand(`b1 = Rotate(c,${360-(75-angle)}°,A)`)
+        app.evalCommand(`a1 = Rotate(a,${(75-angle)}°,C)`)
+        app.evalCommand(`B = Intersect(a1,b1)`)
+        app.setVisible('b1', false)
+        app.setVisible('a1', false)
+      } else if (angle < 90) {
+        app.evalCommand(`b1 = Rotate(c,${angle-75}°,A)`)
+        app.evalCommand(`a1 = Rotate(a,${360-(angle-75)}°,C)`)
+        app.evalCommand(`B = Intersect(a1,b1)`)
+        app.setVisible('b1', false)
+        app.setVisible('a1', false)
+      }
+    }
   }
-
   // -------------------------------------
   return (
     <div className="options-menu">
@@ -191,22 +199,22 @@ export const Triangle = () => {
       </ul>
       <div className="input-points">
         <button onClick={drawDefaultTriangle} >Треугольник</button>
-        <button onClick={drawDefaultEqualTriangle}>Равнобед</button>
-        <button onClick={drawDefaultEquilateralTriangle}>РавноСтр</button>
+        <button onClick={drawDefaultEquilateralTriangle}>Равнобед</button>
+        <button onClick={drawDefaultEqualTriangle}>РавноСтр</button>
       </div>
       {(anglesChoose) ? (
         <>
           <div className="input-points">
             <h2>Angle A</h2>
-            <input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="bac'" placeholder="(x,y)" onChange={changeAngle} />
           </div>
           <div className="input-points">
             <h2>Angle B</h2>
-            <input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="abc'" placeholder="(x,y)" onChange={changeAngle} />
           </div>
           <div className="input-points">
             <h2>Angle C</h2>
-            <input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={changeAngle} />
+            <input className="input-triangle" type="text" id="acb'" placeholder="(x,y)" onChange={changeAngle} />
           </div>
         </>
       ) : (
