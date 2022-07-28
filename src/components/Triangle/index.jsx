@@ -1,17 +1,31 @@
 import { useState } from "react";
 
 export const Triangle = () => {
-  const [f1, setF1] = useState(false);
-  const [f2, setF2] = useState(false);
-  const [f3, setF3] = useState(false);
-  const [points] = useState([[0, 0], [0, 0], [0, 0]]);
-  const [outCircle, setOuterCircle] = useState(false);
-  const [middlepoints] = useState([[0, 0], [0, 0]]);
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
-  const [anglesChoose, setAnglesChoose] = useState(false);
-  const app = window.ggbApplet
+  const [anglesChoose, setanglesChoose] = useState(false)
+  const [inputs] = useState({
+    // sides: [A, B, C]
+    sides: [NaN, NaN, NaN],
+    // angles [A, B, C]
+    angles: [NaN, NaN, NaN]
+  })
 
+  const inputHandler = (event) => {
+    const sideIDs = ['bc', 'ac', 'ab']
+    const angleIDs = ['bac', 'abc', 'acb']
+    const inputId = event.target.id
+    const inputVal = event.target.value
+    if (sideIDs.includes(inputId)) {
+      const side = sideIDs.indexOf(inputId)
+      handleLenghtOfSides(side, parseInt(inputVal))
+    } else {
+      const angle = angleIDs.indexOf(inputId)
+      inputs.angles[angle] = parseInt(inputVal)
+    }
+  }
+
+  const app = window.ggbApplet
 
   //<------- LENGTH OF SIDES 
   const handleLenghtOfSides = (side, sideLength) => {
@@ -40,73 +54,11 @@ export const Triangle = () => {
       }
     }
   }
-
-  // ------>
-
-  // <------ Coordinates and circle 
-  const HandleValOfCoords = (event) => {
-    let pointName = event.target.id
-    let inputStr = event.target.value
-    let app = window.ggbApplet;
-    if (inputStr.charAt(0) === "(" & inputStr.charAt(4) === ")") {
-      if (pointName === "A") {
-        setF1(true)
-        points[0][0] = parseInt(inputStr.charAt(1))
-        points[0][1] = parseInt(inputStr.charAt(3))
-        app.evalCommand(`${pointName}=(${points[0][0]},${points[0][1]})`);
-      }
-      if (pointName === "B") {
-        setF2(true)
-        points[1][0] = parseInt(inputStr.charAt(1))
-        points[1][1] = parseInt(inputStr.charAt(3))
-        app.evalCommand(`${pointName}=(${points[1][0]},${points[1][1]})`);
-      }
-      if (pointName === "C") {
-        setF3(true)
-        points[2][0] = parseInt(inputStr.charAt(1))
-        points[2][1] = parseInt(inputStr.charAt(3))
-        app.evalCommand(`${pointName}=(${points[2][0]},${points[2][1]})`);
-      }
-    }
-  }
-
-  const handleClickOuterCircle = (event) => {
-    setOuterCircle(!outCircle);
-  }
-
-  if (f1 === true & f2 === true & f3 === true) {
-    app.evalCommand(`f=Segment(A,C)`);
-    app.evalCommand(`d=Segment(A,B)`);
-    app.evalCommand(`g=Segment(B,C)`);
-    if (outCircle === true) {
-      drawOuterCircle();
-    }
-  }
-
-  const drawOuterCircle = () => {
-    let app = window.ggbApplet;
-    //AB ---- middle point ---- M1 ----- [1,2] ---- A[1,1] ---- B[1,3]
-    middlepoints[0] = [(points[0][0] + points[1][0]) / 2, (points[0][1] + points[1][1]) / 2]
-    //AC ---- middle point ---- M2 ----- [2,1]
-    middlepoints[1] = [(points[0][0] + points[2][0]) / 2, (points[0][1] + points[2][1]) / 2]
-    console.log(middlepoints, points[0][0], points[1][0], (1 + 1) / 2);
-    app.evalCommand(`M1=(${middlepoints[0][0]},${middlepoints[0][1]})`)
-    app.setVisible('M1', false)
-    app.evalCommand(`M2=(${middlepoints[1][0]},${middlepoints[1][1]})`)
-    app.setVisible('M2', false)
-    app.evalCommand(`i: PerpendicularLine(M1,d)`)
-    app.setVisible('i', false)
-    app.evalCommand(`j: PerpendicularLine(M2,f)`)
-    app.setVisible('j', false)
-    app.evalCommand(`O = Intersect(i,j)`)
-    app.evalCommand(`Circle(O,A)`)
-  }
-  // ------------------------------------> 
-
-  // ------------------------------------->
+  
+  // --------------------Set triangle and change angles----------------->
 
   const drawDefaultTriangle = () => {
-    setAnglesChoose(true)
+    setanglesChoose(true);
     app.evalCommand(`c: y=2x`)
     app.evalCommand(`a: y=-2x+16`)
     app.evalCommand(`b: y=1/5x`)
@@ -114,7 +66,7 @@ export const Triangle = () => {
   }
 
   const drawDefaultEquilateralTriangle = () => {
-    setAnglesChoose(true);
+    setanglesChoose(true);
     app.evalCommand(`c: y=3.72x`)
     app.evalCommand(`a: y=-3.72x+32`)
     app.evalCommand(`b: y=0`)
@@ -122,6 +74,7 @@ export const Triangle = () => {
   }
 
   const drawDefaultEqualTriangle = () => {
+    setanglesChoose(true);
     app.evalCommand(`c: y=1.732x`)
     app.evalCommand(`a: y=-1.732x+15.8`)
     app.evalCommand(`b: y=0`)
@@ -146,7 +99,15 @@ export const Triangle = () => {
   const changeAngleOfEquilateral = (event) => {
     let angle = parseInt(event.target.value)
     if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
-      console.log(angle)
+      applyAnglesToEquilateral(angle);
+    } else if (event.target.id === "abc1" && angle !== 0) {
+      let topAngle = parseInt(event.target.value) 
+      angle = (180 - topAngle) / 2 
+      applyAnglesToEquilateral(angle);
+    }
+  }
+
+  const applyAnglesToEquilateral = (angle) => {
       if (angle > 0 & angle <= 75) {
         app.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
         app.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
@@ -160,46 +121,18 @@ export const Triangle = () => {
         app.setVisible('b1', false)
         app.setVisible('a1', false)
       }
-    } else if (event.target.id === "abc1" && angle !== 0) {
-
-    }
   }
 
-  // -------------------------------------
-  const [inputs, setInputs] = useState({
-    // sides: [A, B, C]
-    'sides': [NaN, NaN, NaN],
-    // angles [A, B, C]
-    'angles': [NaN, NaN, NaN]
-  })
-  const inputHandler = (event) => {
-    const sideIDs = ['bc', 'ac', 'ab']
-    const angleIDs = ['bac', 'abc', 'acb']
-    const inputId = event.target.id
-    const inputVal = event.target.value
-    if (sideIDs.includes(inputId)) {
-      const side = sideIDs.indexOf(inputId)
-      handleLenghtOfSides(side, parseInt(inputVal))
-    } else {
-      const angle = angleIDs.indexOf(inputId)
-      inputs.angles[angle] = parseInt(inputVal)
-    }
+  // -------------------------------------const sideIDs = ['bc', 'ac', 'ab']
 
-  }
-  // -------------------------------------
   return (
     <div className="options-menu">
+      <div className="input-points">
+        <button onClick={drawDefaultTriangle} >Треугольник</button>
+        <button onClick={drawDefaultEquilateralTriangle}>Равнобед</button>
+        <button onClick={drawDefaultEqualTriangle}>РавноСтр</button>
+      </div>
       <ul className="optionList">
-        <li onClick={() => { setGiven('cords') }}>Координаты</li>
-        {given === 'cords' ? (
-          <div className="input-points">
-            A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfCoords} />
-            B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfCoords} />
-            C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfCoords} />
-          </div>
-        ) : (
-          console.log()
-        )}
         <li onClick={() => { setGiven('sides') }}>Стороны</li>
         {given === 'sides' ? (
           <div className="input-points">
@@ -216,16 +149,11 @@ export const Triangle = () => {
             A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={inputHandler} />
             B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={inputHandler} />
             C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={inputHandler} />
-            s    </div>
+          </div>
         ) : (
           console.log()
         )}
       </ul>
-      <div className="input-points">
-        <button onClick={drawDefaultTriangle} >Треугольник</button>
-        <button onClick={drawDefaultEquilateralTriangle}>Равнобед</button>
-        <button onClick={drawDefaultEqualTriangle}>РавноСтр</button>
-      </div>
       {(anglesChoose) ? (
         <>
           <div className="input-points">
