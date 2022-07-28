@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export const Triangle = () => {
+export const Triangle = () => { 
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
   const [type, setType] = useState(null)
@@ -30,12 +30,9 @@ export const Triangle = () => {
     console.log(inputs.sides, inputs.angles)
   }
 
-  const app = window.ggbApplet
-
-  //<------- LENGTH OF SIDES 
+  //<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
     console.log(side, sideLength)
-    let app = window.ggbApplet;
     if (sideLength === 0) {
       alert('nonono')
     } else {
@@ -43,68 +40,85 @@ export const Triangle = () => {
     }
 
     if (lenOfSides.filter((item) => { return item > 0 }).length === 3) {
-      app.evalCommand(`A=(0,0)`)
-      app.evalCommand(`B=(${lenOfSides[0]},0)`)
-      app.evalCommand(`c=Segment(A,B)`)
-      app.evalCommand(`c1: Circle(A,${lenOfSides[1]})`)
-      app.setVisible('c1', false)
-      app.evalCommand(`c2: Circle(B,${lenOfSides[2]})`)
-      app.setVisible('c2', false)
+      window.ggbApplet.evalCommand(`A=(0,0)`)
+      window.ggbApplet.evalCommand(`B=(${lenOfSides[0]},0)`)
+      window.ggbApplet.evalCommand(`c=Segment(A,B)`)
+      window.ggbApplet.evalCommand(`c1: Circle(A,${lenOfSides[1]})`)
+      window.ggbApplet.setVisible('c1', false)
+      window.ggbApplet.evalCommand(`c2: Circle(B,${lenOfSides[2]})`)
+      window.ggbApplet.setVisible('c2', false)
       if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] && lenOfSides[1] < lenOfSides[2] + lenOfSides[0] && lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
-        app.evalCommand(`C=Intersect(c1,c2,1)`)
-        app.evalCommand(`a=Segment(C,B)`);
-        app.evalCommand(`b=Segment(A,C)`);
+        window.ggbApplet.evalCommand(`C=Intersect(c1,c2,1)`)
+        window.ggbApplet.evalCommand(`a=Segment(C,B)`);
+        window.ggbApplet.evalCommand(`b=Segment(A,C)`);
       } else {
         alert("Incorrect input")
       }
     }
   }
 
-  // --------------------Set triangle and change angles----------------->
+  // --------------------------Set triangle and change angles---------------------------->
 
   const drawDefaultTriangle = () => {
-    setType('default')
+    setType('default');
     setanglesChoose(true);
-    app.evalCommand(`c: y=2x`)
-    app.evalCommand(`a: y=-2x+16`)
-    app.evalCommand(`b: y=1/5x`)
+    window.ggbApplet.evalCommand(`c: y=2x`)
+    window.ggbApplet.evalCommand(`a: y=-2x+16`)
+    window.ggbApplet.evalCommand(`b: y=1/5x`)
     defaultOperationsToDraw();
   }
 
   const drawDefaultEquilateralTriangle = () => {
-    setType('equilateral')
+    setType('equilateral');  
     setanglesChoose(true);
-    app.evalCommand(`c: y=3.72x`)
-    app.evalCommand(`a: y=-3.72x+14`)
-    app.evalCommand(`b: y=0`)
+    window.ggbApplet.evalCommand(`c: y=3.72x`);
+    window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
+    window.ggbApplet.evalCommand(`b: y=0`);
     defaultOperationsToDraw();
   }
 
   const drawDefaultEqualTriangle = () => {
     setType('equal')
     setanglesChoose(true);
-    app.evalCommand(`c: y=1.732x`)
-    app.evalCommand(`a: y=-1.732x+15.8`)
-    app.evalCommand(`b: y=0`)
+    window.ggbApplet.evalCommand(`c: y=1.732x`)
+    window.ggbApplet.evalCommand(`a: y=-1.732x+15.8`)
+    window.ggbApplet.evalCommand(`b: y=0`)
     defaultOperationsToDraw();
   }
 
   const defaultOperationsToDraw = () => {
-    app.setVisible('a', false)
-    app.setVisible('b', false)
-    app.setVisible('c', false)
-    app.evalCommand(`A= Intersect(c,b)`)
-    app.evalCommand(`B= Intersect(a,c)`)
-    app.evalCommand(`C= Intersect(a,b)`)
-    app.evalCommand(`alpha = Angle(C,A,B)`)
-    app.evalCommand(`betta = Angle(A,B,C)`)
-    app.evalCommand(`gamma = Angle(B,C,A)`)
-    app.evalCommand(`ab=Segment(A,B)`)
-    app.evalCommand(`bc=Segment(B,C)`)
-    app.evalCommand(`ac=Segment(C,A)`)
+    window.ggbApplet.setVisible('a', false)
+    window.ggbApplet.setVisible('b', false)
+    window.ggbApplet.setVisible('c', false)
+    window.ggbApplet.evalCommand(`A = Intersect(b,c)`)
+    window.ggbApplet.evalCommand(`B = Intersect(a,c)`)
+    window.ggbApplet.evalCommand(`C = Intersect(a,b)`)
+    window.ggbApplet.evalCommand(`alpha = Angle(C,A,B)`)
+    window.ggbApplet.evalCommand(`betta = Angle(A,B,C)`)
+    window.ggbApplet.evalCommand(`gamma = Angle(B,C,A)`)
+    window.ggbApplet.evalCommand(`ab = Segment(A,B)`)
+    window.ggbApplet.evalCommand(`bc = Segment(B,C)`)
+    window.ggbApplet.evalCommand(`ac = Segment(C,A)`)
   }
 
-  const changeAngleOfEquilateral = (event) => {
+  const anglesOfDefault = (event) => {
+    let angle = parseInt(event.target.value)
+
+    if ((event.target.id === "bac1") & angle !== 0) {
+      applyAnglesToDefault(angle);
+    } else if (event.target.id === "abc1" && angle !== 0) {
+      applyAnglesToDefault(angle);
+    } else if (angle !== 0) {
+      applyAnglesToDefault(angle);
+    }
+  }
+
+  const applyAnglesToDefault = (angle) => {
+    console.log(angle);
+    window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle}°,A)`)
+  }
+
+  const anglesOfEquilateral = (event) => {
     let angle = parseInt(event.target.value)
     if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
       applyAnglesToEquilateral(angle);
@@ -116,22 +130,23 @@ export const Triangle = () => {
   }
 
   const applyAnglesToEquilateral = (angle) => {
+    console.log("dalbayob");
     if (angle > 0 & angle <= 75) {
-      app.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
-      app.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
-      app.evalCommand(`B = Intersect(a1,b1)`)
-      app.setVisible('b1', false)
-      app.setVisible('a1', false)
+      window.ggbApplet.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
+      window.ggbApplet.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
+      window.ggbApplet.evalCommand(`B = Intersect(a1,b1)`)
+      window.ggbApplet.setVisible('b1', false)
+      window.ggbApplet.setVisible('a1', false)
     } else if (angle < 90) {
-      app.evalCommand(`b1 = Rotate(c,${angle - 75}°,A)`)
-      app.evalCommand(`a1 = Rotate(a,${360 - (angle - 75)}°,C)`)
-      app.evalCommand(`B = Intersect(a1,b1)`)
-      app.setVisible('b1', false)
-      app.setVisible('a1', false)
+      window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle - 75}°,A)`)
+      window.ggbApplet.evalCommand(`a1 = Rotate(a,${360 - (angle - 75)}°,C)`)
+      window.ggbApplet.evalCommand(`B = Intersect(a1,b1)`)
+      window.ggbApplet.setVisible('b1', false)
+      window.ggbApplet.setVisible('a1', false)
     }
   }
 
-  // -------------------------------------const sideIDs = ['bc', 'ac', 'ab']
+  // -------------------------------------const sideIDs = ['bc', 'ac', 'ab']---------------------------------
 
   return (
     <div className="options-menu">
@@ -154,9 +169,9 @@ export const Triangle = () => {
           <li><input type='checkbox' onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
-                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
-                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={changeAngleOfEquilateral} />
+                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)" onChange={anglesOfDefault} />
+                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)" onChange={anglesOfDefault} />
+                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)" onChange={anglesOfDefault} />
               </div>
             ) : (null)}
 
