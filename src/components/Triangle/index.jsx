@@ -102,10 +102,9 @@ export const Triangle = () => {
     app.evalCommand(`O = Intersect(i,j)`)
     app.evalCommand(`Circle(O,A)`)
   }
-  // -----> 
+  // ------------------------------------> 
 
-  // <------ ANGLES OF TIRANGLE
-
+  // <-------------------- ANGLES OF TIRANGLE
 
   const handleAnglesOfTriangle = (event) => {
     let angleName = event.target.id
@@ -118,12 +117,11 @@ export const Triangle = () => {
     }
   }
 
-
-  // ------>
-
+  // ------------------------------------->
 
 
-  // -------------------------------------
+  // ------------------------------------->
+  
   const drawDefaultTriangle = () => {
     app.evalCommand(`a: y=2x`)
     app.evalCommand(`b: y=-2x+16`)
@@ -132,6 +130,7 @@ export const Triangle = () => {
     app.evalCommand(`B= Intersect(a,c)`)
     app.evalCommand(`C= Intersect(a,b)`)
   }
+
   const drawDefaultEquilateralTriangle = () => {
     app.evalCommand(`a: y=1.41421x`)
     app.evalCommand(`b: y=- 1.41421x+16`)
@@ -156,7 +155,6 @@ export const Triangle = () => {
   }
 
   // -------------------------------------
-
   return (
     <div className="options-menu">
       <ul className="optionList">
@@ -186,7 +184,7 @@ export const Triangle = () => {
             A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={handleLenghtOfSides} />
             B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={handleLenghtOfSides} />
             C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={handleLenghtOfSides} />
-          </div>
+      s    </div>
         ) : (
           console.log()
         )}
