@@ -14,26 +14,24 @@ export const Triangle = () => {
 
 
   //<------- LENGTH OF SIDES 
-  const handleLenghtOfSides = (event) => {
+  const handleLenghtOfSides = (side, sideLength) => {
+    console.log(side, sideLength)
     let app = window.ggbApplet;
-    if (event.target.id === "ab" & event.target.value !== 0) {
-      lenOfSides[0] = parseInt(event.target.value)
-      app.evalCommand(`A=(0,0)`)
-      app.evalCommand(`B=(${event.target.value},0)`)
-      app.evalCommand(`c=Segment(A,B)`)
-    } else if (event.target.id === "ac" & event.target.value !== 0) {
-      lenOfSides[1] = parseInt(event.target.value)
-      app.evalCommand(`c1: Circle(A,${event.target.value})`)
-      app.setVisible('c1', false)
-    } else if (event.target.id === "bc" & event.target.value !== 0) {
-      lenOfSides[2] = parseInt(event.target.value)
-      app.evalCommand(`c2: Circle(B,${event.target.value})`)
-      app.setVisible('c2', false)
+    if (sideLength === 0) {
+      alert('nonono')
+    } else {
+      lenOfSides[side] = sideLength
     }
-    console.log(lenOfSides);
-    if (event.target.value !== 0 & lenOfSides[0] !== 0 & lenOfSides[1] !== 0 & lenOfSides[2] !== 0) {
-      console.log("qwe");
-      if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] & lenOfSides[1] < lenOfSides[2] + lenOfSides[0] & lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
+
+    if (lenOfSides.filter((item) => { return item > 0 }).length === 3) {
+      app.evalCommand(`A=(0,0)`)
+      app.evalCommand(`B=(${lenOfSides[0]},0)`)
+      app.evalCommand(`c=Segment(A,B)`)
+      app.evalCommand(`c1: Circle(A,${lenOfSides[1]})`)
+      app.setVisible('c1', false)
+      app.evalCommand(`c2: Circle(B,${lenOfSides[2]})`)
+      app.setVisible('c2', false)
+      if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] && lenOfSides[1] < lenOfSides[2] + lenOfSides[0] && lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
         app.evalCommand(`C=Intersect(c1,c2,1)`)
         app.evalCommand(`a=Segment(C,B)`);
         app.evalCommand(`b=Segment(A,C)`);
@@ -42,6 +40,7 @@ export const Triangle = () => {
       }
     }
   }
+
   // ------>
 
   // <------ Coordinates and circle 
@@ -105,7 +104,7 @@ export const Triangle = () => {
   // ------------------------------------> 
 
   // ------------------------------------->
-  
+
   const drawDefaultTriangle = () => {
     setAnglesChoose(true)
     app.evalCommand(`c: y=2x`)
@@ -142,28 +141,50 @@ export const Triangle = () => {
     app.evalCommand(`ab=Segment(A,B)`)
     app.evalCommand(`bc=Segment(B,C)`)
     app.evalCommand(`ac=Segment(C,A)`)
-  } 
+  }
 
   const changeAngleOfEquilateral = (event) => {
     let angle = parseInt(event.target.value)
     if ((event.target.id === "bac1" | event.target.id === "acb1") & angle !== 0) {
       console.log(angle)
       if (angle > 0 & angle <= 75) {
-        app.evalCommand(`b1 = Rotate(c,${360-(75-angle)}°,A)`)
-        app.evalCommand(`a1 = Rotate(a,${(75-angle)}°,C)`)
+        app.evalCommand(`b1 = Rotate(c,${360 - (75 - angle)}°,A)`)
+        app.evalCommand(`a1 = Rotate(a,${(75 - angle)}°,C)`)
         app.evalCommand(`B = Intersect(a1,b1)`)
         app.setVisible('b1', false)
         app.setVisible('a1', false)
       } else if (angle < 90) {
-        app.evalCommand(`b1 = Rotate(c,${angle-75}°,A)`)
-        app.evalCommand(`a1 = Rotate(a,${360-(angle-75)}°,C)`)
+        app.evalCommand(`b1 = Rotate(c,${angle - 75}°,A)`)
+        app.evalCommand(`a1 = Rotate(a,${360 - (angle - 75)}°,C)`)
         app.evalCommand(`B = Intersect(a1,b1)`)
         app.setVisible('b1', false)
         app.setVisible('a1', false)
       }
     } else if (event.target.id === "abc1" && angle !== 0) {
-      
+
     }
+  }
+
+  // -------------------------------------
+  const [inputs, setInputs] = useState({
+    // sides: [A, B, C]
+    'sides': [NaN, NaN, NaN],
+    // angles [A, B, C]
+    'angles': [NaN, NaN, NaN]
+  })
+  const inputHandler = (event) => {
+    const sideIDs = ['bc', 'ac', 'ab']
+    const angleIDs = ['bac', 'abc', 'acb']
+    const inputId = event.target.id
+    const inputVal = event.target.value
+    if (sideIDs.includes(inputId)) {
+      const side = sideIDs.indexOf(inputId)
+      handleLenghtOfSides(side, parseInt(inputVal))
+    } else {
+      const angle = angleIDs.indexOf(inputId)
+      inputs.angles[angle] = parseInt(inputVal)
+    }
+
   }
   // -------------------------------------
   return (
@@ -175,16 +196,16 @@ export const Triangle = () => {
             A:<input className="input-triangle" type="text" id="A" placeholder="(x,y)" onChange={HandleValOfCoords} />
             B:<input className="input-triangle" type="text" id="B" placeholder="(x,y)" onChange={HandleValOfCoords} />
             C:<input className="input-triangle" type="text" id="C" placeholder="(x,y)" onChange={HandleValOfCoords} />
-          </div>  
+          </div>
         ) : (
           console.log()
         )}
         <li onClick={() => { setGiven('sides') }}>Стороны</li>
         {given === 'sides' ? (
           <div className="input-points">
-            AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={handleLenghtOfSides} />
-            BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={handleLenghtOfSides} />
-            AC:<input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={handleLenghtOfSides} />
+            AB:<input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
+            BC:<input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
+            AC:<input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
           </div>
         ) : (
           console.log()
@@ -192,10 +213,10 @@ export const Triangle = () => {
         <li onClick={() => { setGiven('angles') }}>Углы</li>
         {given === 'angles' ? (
           <div className="input-points">
-            A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={handleLenghtOfSides} />
-            B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={handleLenghtOfSides} />
-            C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={handleLenghtOfSides} />
-      s    </div>
+            A:<input className="input-triangle" type="text" id="bac" placeholder="Градусная мера угла А" onChange={inputHandler} />
+            B:<input className="input-triangle" type="text" id="abc" placeholder="Градусная мера угла B" onChange={inputHandler} />
+            C:<input className="input-triangle" type="text" id="acb" placeholder="Градусная мера угла C" onChange={inputHandler} />
+            s    </div>
         ) : (
           console.log()
         )}
