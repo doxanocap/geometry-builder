@@ -33,6 +33,7 @@ export const Triangle = () => {
 
   }
 
+
   //<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
     if (sideLength === 0) {
@@ -66,9 +67,9 @@ export const Triangle = () => {
     toggleCheck1(false)
     toggleCheck2(false)
     setanglesChoose(true);
-    window.ggbApplet.evalCommand(`c: y=2x`)
-    window.ggbApplet.evalCommand(`a: y=-2x+16`)
-    window.ggbApplet.evalCommand(`b: y=1/5x`)
+    window.ggbApplet.evalCommand(`A: (0,0)`)
+    window.ggbApplet.evalCommand(`B: (4,8)`)
+    window.ggbApplet.evalCommand(`C: (7,1)`)
     defaultOperationsToDraw();
   }
 
@@ -76,7 +77,7 @@ export const Triangle = () => {
     setType('equilateral');
     toggleCheck1(false)
     toggleCheck2(false)
-    setanglesChoose(true);
+    setanglesChoose(true);  
     window.ggbApplet.evalCommand(`c: y=3.72x`);
     window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
     window.ggbApplet.evalCommand(`b: y=0`);
@@ -95,12 +96,12 @@ export const Triangle = () => {
   }
 
   const defaultOperationsToDraw = () => {
+    window.ggbApplet.evalCommand(`a: Line(B,C)`)
+    window.ggbApplet.evalCommand(`b: Line(A,C)`)
+    window.ggbApplet.evalCommand(`c: Line(A,B)`)
     window.ggbApplet.setVisible('a', false)
     window.ggbApplet.setVisible('b', false)
     window.ggbApplet.setVisible('c', false)
-    window.ggbApplet.evalCommand(`A = Intersect(b,c)`)
-    window.ggbApplet.evalCommand(`B = Intersect(a,c)`)
-    window.ggbApplet.evalCommand(`C = Intersect(a,b)`)
     window.ggbApplet.evalCommand(`alpha = Angle(C,A,B)`)
     window.ggbApplet.evalCommand(`betta = Angle(A,B,C)`)
     window.ggbApplet.evalCommand(`gamma = Angle(B,C,A)`)
@@ -111,23 +112,24 @@ export const Triangle = () => {
 
   const anglesOfDefault = (event) => {
     let angle = parseInt(event.target.value)
-    if ((event.target.id === "bac1") & angle !== 0) {     
-        let currentAngleCAB = parseInt(parseFloat(window.ggbApplet.getValue(`alpha`)) * 180 / Math.PI)  
-        console.log(currentAngleCAB);
-        if ( angle > 0 && angle < currentAngleCAB) {
-          window.ggbApplet.evalCommand(`b1 = Rotate(c,${360-(currentAngleCAB-angle)}°,A)`)
-           
-          // window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
-          // defaultOperationsToDraw();
-        } else if (angle < 180) {
-          window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle + currentAngleCAB}°,A)`) 
-          window.ggbApplet.setVisible('b1', false)
-          window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
-          defaultOperationsToDraw();
-        }
-    } else if (event.target.id === "abc1" && angle !== 0) {
-    } else if (angle !== 0) {
-    }
+    console.log(angle);
+    if (event.target.id === "bac1" && angle >= 1 && angle < 180) {  
+      let R = window.ggbApplet.getValue(`AB`);
+      window.ggbApplet.evalCommand(`b1 = Rotate(b,${angle}°,A)`)
+      window.ggbApplet.evalCommand(`Aab: Circle(A,${R})`)
+      window.ggbApplet.setVisible('b1', false)
+      window.ggbApplet.setVisible('Aab', false)
+      window.ggbApplet.evalCommand(`B = Intersect(b1, Aab, 2)`)
+    } 
+    else if (event.target.id === "abc1" & angle >= 0 && angle < 180) {
+      let R = window.ggbApplet.getValue(`BC`);
+      window.ggbApplet.evalCommand(`a1 = Rotate(c,${angle}°,B)`)
+      window.ggbApplet.evalCommand(`C = Intersect(a1,b)`)
+      window.ggbApplet.setVisible('a1', false)
+    } else if (event.target.id === "acb1" & angle >= 0 && angle < 180) {
+        // Кароч тут нужно 9 ифов и на самом деле тут без говнокода никак дальше
+        // пока что работает только если ввести А и позже ввести B
+    }  
   }
 
   const applyAnglesToDefault = (angle) => {
