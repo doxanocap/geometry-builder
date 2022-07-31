@@ -11,8 +11,8 @@ export const Triangle = () => {
     // angles [A, B, C]
     angles: [NaN, NaN, NaN]
   })
-  const [check1, toggleCheck1] = useState(false)
-  const [check2, toggleCheck2] = useState(false)
+  const [check1, toggleCheck1] = useState(true)
+  const [check2, toggleCheck2] = useState(true)
   const [angValues, setAngValues] = useState([0, 0, 0])
 
   const inputHandler = (event) => {
@@ -64,8 +64,8 @@ export const Triangle = () => {
 
   const drawDefaultTriangle = () => {
     setType('default');
-    toggleCheck1(false)
-    toggleCheck2(false)
+    toggleCheck1(true)
+    toggleCheck2(true)
     setanglesChoose(true);
     window.ggbApplet.evalCommand(`A: (0,0)`)
     window.ggbApplet.evalCommand(`B: (4,8)`)
@@ -75,9 +75,15 @@ export const Triangle = () => {
 
   const drawDefaultEquilateralTriangle = () => {
     setType('equilateral');
+<<<<<<< HEAD
     toggleCheck1(false)
     toggleCheck2(false)
     setanglesChoose(true);  
+=======
+    toggleCheck1(true)
+    toggleCheck2(true)
+    setanglesChoose(true);
+>>>>>>> 72546437a47c8a8564060aa1a114eb311c0401fe
     window.ggbApplet.evalCommand(`c: y=3.72x`);
     window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
     window.ggbApplet.evalCommand(`b: y=0`);
@@ -86,8 +92,8 @@ export const Triangle = () => {
 
   const drawDefaultEqualTriangle = () => {
     setType('equal')
-    toggleCheck1(false)
-    toggleCheck2(false)
+    toggleCheck1(true)
+    toggleCheck2(true)
     setanglesChoose(true);
     window.ggbApplet.evalCommand(`c: y=1.732x`)
     window.ggbApplet.evalCommand(`a: y=-1.732x+15.8`)
@@ -112,6 +118,7 @@ export const Triangle = () => {
 
   const anglesOfDefault = (event) => {
     let angle = parseInt(event.target.value)
+<<<<<<< HEAD
     console.log(angle);
     if (event.target.id === "bac1" && angle >= 1 && angle < 180) {  
       let R = window.ggbApplet.getValue(`AB`);
@@ -130,6 +137,25 @@ export const Triangle = () => {
         // Кароч тут нужно 9 ифов и на самом деле тут без говнокода никак дальше
         // пока что работает только если ввести А и позже ввести B
     }  
+=======
+    if ((event.target.id === "bac1") & angle !== 0) {
+      let currentAngleCAB = parseInt(parseFloat(window.ggbApplet.getValue(`alpha`)) * 180 / Math.PI)
+      console.log(currentAngleCAB);
+      if (angle > 0 && angle < currentAngleCAB) {
+        window.ggbApplet.evalCommand(`b1 = Rotate(c,${360 - (currentAngleCAB - angle)}°,A)`)
+
+        // window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
+        // defaultOperationsToDraw();
+      } else if (angle < 180) {
+        window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle + currentAngleCAB}°,A)`)
+        window.ggbApplet.setVisible('b1', false)
+        window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
+        defaultOperationsToDraw();
+      }
+    } else if (event.target.id === "abc1" && angle !== 0) {
+    } else if (angle !== 0) {
+    }
+>>>>>>> 72546437a47c8a8564060aa1a114eb311c0401fe
   }
 
   const applyAnglesToDefault = (angle) => {
@@ -212,9 +238,9 @@ export const Triangle = () => {
           <li><input type='checkbox' checked={check1} onChange={() => { toggleCheck1(!check1) }} /> Стороны
             {check1 ? (
               <div className="input-points">
-                BC: <input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} />
-                AB: <input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
-                AC: <input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} />
+                BC: <input className="input-triangle" type="text" id="bc" placeholder="dlina BC" onChange={inputHandler} value={parseFloat(window.ggbApplet.getValue(`Segment(B,C)`)).toFixed(2)} readonly="readonly" />
+                AB: <input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} value={parseFloat(window.ggbApplet.getValue(`Segment(A,B)`)).toFixed(2)} readonly="readonly" />
+                AC: <input className="input-triangle" type="text" id="ac" placeholder="dlina AC" onChange={inputHandler} value={parseFloat(window.ggbApplet.getValue(`Segment(A,C)`)).toFixed(2)} readonly="readonly" />
               </div>
             ) : (null)}
 
