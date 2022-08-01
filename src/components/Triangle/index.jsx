@@ -15,7 +15,7 @@ export const Triangle = () => {
   const [check1, toggleCheck1] = useState(true)
   const [check2, toggleCheck2] = useState(true)
   const [angValues, setAngValues] = useState([0, 0, 0])
-  const [flagID, setFlagID] = useState("");
+  const [temp, setTemp] = useState(0);
 
   const inputHandler = (event) => {
     const sideIDs = ['bc', 'ac', 'ab']
@@ -25,6 +25,13 @@ export const Triangle = () => {
     if (sideIDs.includes(inputId)) {
       const side = sideIDs.indexOf(inputId)
       inputs.sides[side] = parseInt(inputVal)
+      if (type === 'equal') {
+        if (parseInt(inputVal) > 0) {
+          handleLenghtOfSides(4, parseInt(inputVal))
+        } else {
+          setTemp(0)
+        }
+      }
       handleLenghtOfSides(side, parseInt(inputVal))
     } else {
       const angle = angleIDs.indexOf(inputId)
@@ -42,29 +49,46 @@ export const Triangle = () => {
 
   //<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
-    if (sideLength === 0) {
-      alert('nonono')
-    } else {
-      lenOfSides[side] = sideLength
-    }
-
-    if (lenOfSides.filter((item) => { return item > 0 }).length === 3) {
+    if (side === 4) {
+      console.log('bruh')
       window.ggbApplet.evalCommand(`A=(0,0)`)
-      window.ggbApplet.evalCommand(`B=(${lenOfSides[0]},0)`)
+      window.ggbApplet.evalCommand(`B=(${sideLength},0)`)
       window.ggbApplet.evalCommand(`c=Segment(A,B)`)
-      window.ggbApplet.evalCommand(`c1: Circle(A,${lenOfSides[1]})`)
+      window.ggbApplet.evalCommand(`c1: Circle(A,${sideLength})`)
       window.ggbApplet.setVisible('c1', false)
-      window.ggbApplet.evalCommand(`c2: Circle(B,${lenOfSides[2]})`)
+      window.ggbApplet.evalCommand(`c2: Circle(B,${sideLength})`)
       window.ggbApplet.setVisible('c2', false)
-      if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] && lenOfSides[1] < lenOfSides[2] + lenOfSides[0] && lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
-        window.ggbApplet.evalCommand(`C=Intersect(c1,c2,1)`)
-        window.ggbApplet.evalCommand(`a=Segment(C,B)`);
-        window.ggbApplet.evalCommand(`b=Segment(A,C)`);
+      window.ggbApplet.evalCommand(`C=Intersect(c1,c2,1)`)
+      window.ggbApplet.evalCommand(`a=Segment(C,B)`);
+      window.ggbApplet.evalCommand(`b=Segment(A,C)`);
+      setTemp(sideLength)
+    } else {
+      if (sideLength === 0) {
+        alert('nonono')
       } else {
-        alert("Incorrect input")
+        lenOfSides[side] = sideLength
       }
+
+      if (lenOfSides.filter((item) => { return item > 0 }).length === 3) {
+        window.ggbApplet.evalCommand(`A=(0,0)`)
+        window.ggbApplet.evalCommand(`B=(${lenOfSides[0]},0)`)
+        window.ggbApplet.evalCommand(`c=Segment(A,B)`)
+        window.ggbApplet.evalCommand(`c1: Circle(A,${lenOfSides[1]})`)
+        window.ggbApplet.setVisible('c1', false)
+        window.ggbApplet.evalCommand(`c2: Circle(B,${lenOfSides[2]})`)
+        window.ggbApplet.setVisible('c2', false)
+        if (lenOfSides[0] < lenOfSides[1] + lenOfSides[2] && lenOfSides[1] < lenOfSides[2] + lenOfSides[0] && lenOfSides[2] < lenOfSides[0] + lenOfSides[1]) {
+          window.ggbApplet.evalCommand(`C=Intersect(c1,c2,1)`)
+          window.ggbApplet.evalCommand(`a=Segment(C,B)`);
+          window.ggbApplet.evalCommand(`b=Segment(A,C)`);
+        } else {
+          alert("Incorrect input")
+        }
+      }
+
     }
   }
+
 
   // --------------------------Set triangle and change angles---------------------------->
 
@@ -134,40 +158,40 @@ export const Triangle = () => {
 
   const anglesOfDefault = (inputs, id, angle) => {
     console.log(inputs.angles);
-    if (inputs.angles.filter(x => Number.isNaN(x)).length === 2 && angle > 0) {  
-      let R = window.ggbApplet.getValue(`${id.substr(2,2)}`);
-      window.ggbApplet.evalCommand(`${id.substr(0,2)} = Rotate(${id.substr(0,1)},${angle}°,${id.substr(2,1)})`)
-      window.ggbApplet.evalCommand(`${id}: Circle(${id.substr(2,1)},${R})`)
-      window.ggbApplet.evalCommand(`${id.substr(3,1)} = Intersect(${id.substr(0,2)}, ${id}, 2)`)
-      window.ggbApplet.setVisible(id.substr(0,2), false)
+    if (inputs.angles.filter(x => Number.isNaN(x)).length === 2 && angle > 0) {
+      let R = window.ggbApplet.getValue(`${id.substr(2, 2)}`);
+      window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
+      window.ggbApplet.evalCommand(`${id}: Circle(${id.substr(2, 1)},${R})`)
+      window.ggbApplet.evalCommand(`${id.substr(3, 1)} = Intersect(${id.substr(0, 2)}, ${id}, 2)`)
+      window.ggbApplet.setVisible(id.substr(0, 2), false)
       window.ggbApplet.setVisible(id, false)
       setCheck(id)
-    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 && angle > 0) { 
-      if ( check === "b1ABa" && id === "a1CAc" )  { 
+    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 && angle > 0) {
+      if (check === "b1ABa" && id === "a1CAc") {
         angle = countDiff();
-        id = "c1BCb"   
-      } else if ( check === "c1BCb" && id === "b1ABa") {
+        id = "c1BCb"
+      } else if (check === "c1BCb" && id === "b1ABa") {
         angle = countDiff();
         id = "a1CAc"
-      } else if ( check === "a1CAc" && id === "c1BCb" ) {
+      } else if (check === "a1CAc" && id === "c1BCb") {
         angle = countDiff()
         id = "b1ABa"
       }
-      console.log(angle,id, );
-      window.ggbApplet.evalCommand(`${id.substr(0,2)} = Rotate(${id.substr(0,1)},${angle}°,${id.substr(2,1)})`)
-      window.ggbApplet.evalCommand(`${id.substr(3,1)} = Intersect(${id.substr(0,2)},${id.substr(4,1)})`)
-      window.ggbApplet.setVisible(id.substr(0,2), false)
+      console.log(angle, id,);
+      window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
+      window.ggbApplet.evalCommand(`${id.substr(3, 1)} = Intersect(${id.substr(0, 2)},${id.substr(4, 1)})`)
+      window.ggbApplet.setVisible(id.substr(0, 2), false)
     } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 0) {
       console.log("qwe");
-    } 
+    }
   }
 
   const countDiff = () => {
     let diff = 180
-      inputs.angles.map((angle) => {
-      if (!Number.isNaN(angle)){
+    inputs.angles.map((angle) => {
+      if (!Number.isNaN(angle)) {
         diff = diff - angle
-      }     
+      }
     })
     return diff
   }
@@ -268,7 +292,9 @@ export const Triangle = () => {
       ) : (null)}
       {type === 'equal' ? (
         <ul className="optionList">
-          <li>ну икуал</li>
+          <div className="input-points">
+            a: <input className="input-triangle" type="text" id="bc" placeholder="dlina" onChange={inputHandler} value={temp} />
+          </div>
         </ul>
       ) : (null)}
 
