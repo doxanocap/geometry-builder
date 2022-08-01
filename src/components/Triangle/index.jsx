@@ -139,7 +139,7 @@ export const Triangle = () => {
       window.ggbApplet.evalCommand(`${id.substr(0,2)} = Rotate(${id.substr(0,1)},${angle}°,${id.substr(2,1)})`)
       window.ggbApplet.evalCommand(`${id}: Circle(${id.substr(2,1)},${R})`)
       window.ggbApplet.evalCommand(`${id.substr(3,1)} = Intersect(${id.substr(0,2)}, ${id}, 2)`)
-      window.ggbApplet.setVisible(id.substr(0,2), false)
+      window.ggbApplet.setVisible(id.substr(0,2), false )
       window.ggbApplet.setVisible(id, false)
       setCheck(id)
     } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 && angle > 0) { 
