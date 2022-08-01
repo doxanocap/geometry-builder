@@ -4,7 +4,6 @@ export const Triangle = () => {
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
   const [type, setType] = useState(null)
-  const [anglesChoose, setanglesChoose] = useState(false)
   const [check, setCheck] = useState("")
   const [inputs] = useState({
     // sides: [A, B, C]
@@ -94,9 +93,6 @@ export const Triangle = () => {
 
   const drawDefaultTriangle = () => {
     setType('default');
-    //toggleCheck1(false)
-    //toggleCheck2(false)
-    //setanglesChoose(true);
     window.ggbApplet.evalCommand(`A: (0,0)`)
     window.ggbApplet.evalCommand(`B: (4,8)`)
     window.ggbApplet.evalCommand(`C: (7,1)`)
@@ -105,9 +101,6 @@ export const Triangle = () => {
 
   const drawDefaultEquilateralTriangle = () => {
     setType('equilateral');
-    toggleCheck1(false)
-    toggleCheck2(false)
-    setanglesChoose(true);
 
     window.ggbApplet.evalCommand(`c: y=3.72x`);
     window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
@@ -132,9 +125,6 @@ export const Triangle = () => {
 
   const drawDefaultEqualTriangle = () => {
     setType('equal')
-    toggleCheck1(false)
-    toggleCheck2(false)
-    setanglesChoose(true);
     window.ggbApplet.evalCommand(`A: (0,0)`)
     window.ggbApplet.evalCommand(`B: (8,0)`)
     window.ggbApplet.evalCommand(`C: (4,6.928)`)
@@ -142,6 +132,10 @@ export const Triangle = () => {
   }
 
   const defaultOperationsToDraw = () => {
+    toggleCheck1(false)
+    toggleCheck2(false)
+    setAngValues([0, 0, 0])
+    setTemp(0)
     window.ggbApplet.evalCommand(`a: Line(B,C)`)
     window.ggbApplet.evalCommand(`b: Line(A,C)`)
     window.ggbApplet.evalCommand(`c: Line(A,B)`)
