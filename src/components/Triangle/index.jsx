@@ -14,6 +14,7 @@ export const Triangle = () => {
   const [check1, toggleCheck1] = useState(true)
   const [check2, toggleCheck2] = useState(true)
   const [angValues, setAngValues] = useState([0, 0, 0])
+  const [flagID, setFlagID] = useState("");
 
   const inputHandler = (event) => {
     const sideIDs = ['bc', 'ac', 'ab']
@@ -28,11 +29,15 @@ export const Triangle = () => {
       const angle = angleIDs.indexOf(inputId)
       event.target.value = inputVal
       inputs.angles[angle] = parseInt(inputVal)
-      anglesOfEquilateral(angle, parseInt(inputVal))
+      if (type === "equilateral"){
+        anglesOfEquilateral(angle, parseInt(inputVal))
+      }
+      if (type === "default"){
+        anglesOfDefault(inputs, event.target.name, event.target.value)
+      }
     }
 
   }
-
 
   //<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
@@ -64,9 +69,9 @@ export const Triangle = () => {
 
   const drawDefaultTriangle = () => {
     setType('default');
-    toggleCheck1(true)
-    toggleCheck2(true)
-    setanglesChoose(true);
+    //toggleCheck1(false)
+    //toggleCheck2(false)
+    //setanglesChoose(true);
     window.ggbApplet.evalCommand(`A: (0,0)`)
     window.ggbApplet.evalCommand(`B: (4,8)`)
     window.ggbApplet.evalCommand(`C: (7,1)`)
@@ -75,29 +80,23 @@ export const Triangle = () => {
 
   const drawDefaultEquilateralTriangle = () => {
     setType('equilateral');
-<<<<<<< HEAD
     toggleCheck1(false)
     toggleCheck2(false)
-    setanglesChoose(true);  
-=======
-    toggleCheck1(true)
-    toggleCheck2(true)
     setanglesChoose(true);
->>>>>>> 72546437a47c8a8564060aa1a114eb311c0401fe
-    window.ggbApplet.evalCommand(`c: y=3.72x`);
-    window.ggbApplet.evalCommand(`a: y=-3.72x+14`);
-    window.ggbApplet.evalCommand(`b: y=0`);
+    window.ggbApplet.evalCommand(`A: (0,0)`);
+    window.ggbApplet.evalCommand(`B: (8,0)`);
+    window.ggbApplet.evalCommand(`C: (4,8)`);
     defaultOperationsToDraw();
   }
 
   const drawDefaultEqualTriangle = () => {
     setType('equal')
-    toggleCheck1(true)
-    toggleCheck2(true)
+    toggleCheck1(false)
+    toggleCheck2(false)
     setanglesChoose(true);
-    window.ggbApplet.evalCommand(`c: y=1.732x`)
-    window.ggbApplet.evalCommand(`a: y=-1.732x+15.8`)
-    window.ggbApplet.evalCommand(`b: y=0`)
+    window.ggbApplet.evalCommand(`A: (0,0)`)
+    window.ggbApplet.evalCommand(`B: (8,0)`)
+    window.ggbApplet.evalCommand(`C: (4,6.928)`)
     defaultOperationsToDraw();
   }
 
@@ -116,50 +115,23 @@ export const Triangle = () => {
     window.ggbApplet.evalCommand(`ac = Segment(C,A)`)
   }
 
-  const anglesOfDefault = (event) => {
-    let angle = parseInt(event.target.value)
-<<<<<<< HEAD
-    console.log(angle);
-    if (event.target.id === "bac1" && angle >= 1 && angle < 180) {  
-      let R = window.ggbApplet.getValue(`AB`);
-      window.ggbApplet.evalCommand(`b1 = Rotate(b,${angle}°,A)`)
-      window.ggbApplet.evalCommand(`Aab: Circle(A,${R})`)
-      window.ggbApplet.setVisible('b1', false)
-      window.ggbApplet.setVisible('Aab', false)
-      window.ggbApplet.evalCommand(`B = Intersect(b1, Aab, 2)`)
-    } 
-    else if (event.target.id === "abc1" & angle >= 0 && angle < 180) {
-      let R = window.ggbApplet.getValue(`BC`);
+  const anglesOfDefault = (inputs, id, angle) => {
+    if (inputs.angles.filter(x => Number.isNaN(x)).length === 2) {  
+      let R = window.ggbApplet.getValue(`${id.substr(2,2)}`);
+      console.log(R);
+      window.ggbApplet.evalCommand(`${id.substr(0,2)} = Rotate(${id.substr(0,1)},${angle}°,${id.substr(2,1)})`)
+      window.ggbApplet.evalCommand(`X: Circle(${id.substr(2,1)},${R})`)
+      window.ggbApplet.setVisible(`${id.substr(0,2)}`, false)
+      window.ggbApplet.setVisible('X', false)
+      window.ggbApplet.evalCommand(`${id.substr(3)} = Intersect(${id.substr(0,2)}, X, 2)`)
+
+    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1) {
       window.ggbApplet.evalCommand(`a1 = Rotate(c,${angle}°,B)`)
       window.ggbApplet.evalCommand(`C = Intersect(a1,b)`)
       window.ggbApplet.setVisible('a1', false)
-    } else if (event.target.id === "acb1" & angle >= 0 && angle < 180) {
-        // Кароч тут нужно 9 ифов и на самом деле тут без говнокода никак дальше
-        // пока что работает только если ввести А и позже ввести B
-    }  
-=======
-    if ((event.target.id === "bac1") & angle !== 0) {
-      let currentAngleCAB = parseInt(parseFloat(window.ggbApplet.getValue(`alpha`)) * 180 / Math.PI)
-      console.log(currentAngleCAB);
-      if (angle > 0 && angle < currentAngleCAB) {
-        window.ggbApplet.evalCommand(`b1 = Rotate(c,${360 - (currentAngleCAB - angle)}°,A)`)
-
-        // window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
-        // defaultOperationsToDraw();
-      } else if (angle < 180) {
-        window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle + currentAngleCAB}°,A)`)
-        window.ggbApplet.setVisible('b1', false)
-        window.ggbApplet.evalCommand(`b: ${window.ggbApplet.getValueString(`b1`).substr(3)}`)
-        defaultOperationsToDraw();
-      }
-    } else if (event.target.id === "abc1" && angle !== 0) {
-    } else if (angle !== 0) {
-    }
->>>>>>> 72546437a47c8a8564060aa1a114eb311c0401fe
-  }
-
-  const applyAnglesToDefault = (angle) => {
-    window.ggbApplet.evalCommand(`b1 = Rotate(c,${angle}°,A)`)
+    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 0) {
+      console.log('hehehaha')
+    } 
   }
 
   const anglesOfEquilateral = (angle, angleVal) => {
@@ -208,7 +180,6 @@ export const Triangle = () => {
       {type === 'default' ? (
         <ul className="optionList">
           <li><input type='checkbox' checked={check1} onChange={() => { toggleCheck1(!check1) }} /> Стороны
-            <div>Тут крч функция на углы не робит</div>
             {check1 ? (
               <div className="input-points">
                 AB: <input className="input-triangle" type="text" id="ab" placeholder="dlina AB" onChange={inputHandler} />
@@ -221,12 +192,12 @@ export const Triangle = () => {
           <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-                A: <input className="input-triangle" type="text" id="bac1" placeholder="(x,y)"
-                  onChange={anglesOfDefault} />
-                B: <input className="input-triangle" type="text" id="abc1" placeholder="(x,y)"
-                  onChange={anglesOfDefault} />
-                C: <input className="input-triangle" type="text" id="acb1" placeholder="(x,y)"
-                  onChange={anglesOfDefault} />
+                A: <input className="input-triangle" type="text" name="b1AB" id="bac" placeholder="(x,y)"
+                  onChange={inputHandler} />
+                B: <input className="input-triangle" type="text" name="c1BC" id="abc" placeholder="(x,y)"
+                  onChange={inputHandler} />
+                C: <input className="input-triangle" type="text" name="a1CA" id="acb" placeholder="(x,y)"
+                  onChange={inputHandler} />
               </div>
             ) : (null)}
 
