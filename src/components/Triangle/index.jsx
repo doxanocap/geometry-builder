@@ -16,7 +16,9 @@ export const Triangle = () => {
   const [angValues, setAngValues] = useState([0, 0, 0])
   const [temp, setTemp] = useState(0);
   const [coordinates, setCoordinates] = useState([[0, 0], [0, 0], [0, 0]]);
-  
+  const [displayThirdAngle, setDisplayThirdAngle] = useState(false);
+  const [Values, setValues] = useState()
+
   const inputHandler = (event) => {
     const sideIDs = ['bc', 'ac', 'ab']
     const angleIDs = ['bac', 'abc', 'acb']
@@ -41,12 +43,13 @@ export const Triangle = () => {
         anglesOfEquilateral(angle, parseInt(inputVal))
       }
       if (type === "default") {
+        console.log(event.target.value);
         anglesOfDefault(inputs, event.target.name, event.target.value)
       }
     }
   }
 
-  //<--------------------------LENGTH OF SIDES--------------------- 
+//<--------------------------LENGTH OF SIDES--------------------- 
   const handleLenghtOfSides = (side, sideLength) => {
     if (side === 4) {
       console.log('bruh')
@@ -163,6 +166,11 @@ export const Triangle = () => {
   }
 
   const anglesOfDefault = (inputs, id, angle) => {
+    if (angle === "" || angle === NaN) {
+      angValues[1] = 0
+      console.log(angValues);
+      return;
+    }
     const countDiff = () => {
       let diff = 180
       inputs.angles.map((angle) => {
@@ -172,43 +180,42 @@ export const Triangle = () => {
       })
      return diff
     } 
-  
-    if (inputs.angles.filter(x => Number.isNaN(x)).length === 2 && angle > 0) {
+
+    if (inputs.angles.filter(x => Number.isNaN(x)).length === 2 ) {
       let R = window.ggbApplet.getValue(`${id.substr(2, 2)}`);
       window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
       window.ggbApplet.evalCommand(`${id}: Circle(${id.substr(2, 1)},${R})`)
       window.ggbApplet.evalCommand(`${id.substr(3, 1)} = Intersect(${id.substr(0, 2)}, ${id}, 2)`)
       window.ggbApplet.setVisible(id.substr(0, 2), false)
       window.ggbApplet.setVisible(id, false)
-      setCheck(id)
-    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 && angle > 0) {
+      setCheck(id);
+
+    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 ) {
       if (check === "b1ABa" && id === "a1CAc") {
         angle = countDiff();
-        id = "c1BCb"
+        id = "c1BCb" 
       } else if (check === "c1BCb" && id === "b1ABa") {
         angle = countDiff();
         id = "a1CAc"
-      } else if (check === "a1CAc" && id === "c1BCb") {
-        angle = countDiff()
+      } else if (check === "a1CAc" && id === "c1BCb" ) {
+        angle = countDiff();
         id = "b1ABa"
-      }
+      } 
       window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
       window.ggbApplet.evalCommand(`${id.substr(3, 1)} = Intersect(${id.substr(0, 2)},${id.substr(4, 1)})`)
       window.ggbApplet.setVisible(id.substr(0, 2), false)
-    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 0) {
-      console.log("qwe");
-    }
-    var x = parseFloat(180 / Math.PI * window.ggbApplet.getValue(`alpha`)).toFixed(2);
-    console.log(x);
-    setAngValues([
-      parseFloat(parseFloat(window.ggbApplet.getValue(`alpha`) * 180 / Math.PI).toFixed(2)),
-      parseFloat(parseFloat(window.ggbApplet.getValue(`betta`) * 180 / Math.PI).toFixed(2)),
-      parseFloat(parseFloat(window.ggbApplet.getValue(`gus`) * 180 / Math.PI).toFixed(2))
-    ]);
-    console.log(angValues);
-    coordinates[0] = getValueOfCoords(window.ggbApplet.getValueString(`A`))
-    coordinates[1] = getValueOfCoords(window.ggbApplet.getValueString(`B`))
-    coordinates[2] = getValueOfCoords(window.ggbApplet.getValueString(`C`))
+      setDisplayThirdAngle(true);
+    } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 0 && displayThirdAngle) {
+        console.log("qwe");
+      }
+      setAngValues([
+        parseFloat(parseFloat(window.ggbApplet.getValue(`alpha`) * 180 / Math.PI).toFixed(2)),
+        parseFloat(parseFloat(window.ggbApplet.getValue(`betta`) * 180 / Math.PI).toFixed(2)),
+        parseFloat(parseFloat(window.ggbApplet.getValue(`gus`) * 180 / Math.PI).toFixed(2))
+      ]);
+      coordinates[0] = getValueOfCoords(window.ggbApplet.getValueString(`A`))
+      coordinates[1] = getValueOfCoords(window.ggbApplet.getValueString(`B`))
+      coordinates[2] = getValueOfCoords(window.ggbApplet.getValueString(`C`))
   }
 
   const anglesOfEquilateral = (angle, angleVal) => {
@@ -284,12 +291,12 @@ export const Triangle = () => {
           <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-                A: <input className="input-triangle" type="text" name="b1ABa" id="bac" placeholder="(x,y)"
-                  onChange={inputHandler} value={angValues[0]}/>
-                B: <input className="input-triangle" type="text" name="c1BCb" id="abc" placeholder="(x,y)"
-                  onChange={inputHandler} value={angValues[1]}/>
-                C: <input className="input-triangle" type="text" name="a1CAc" id="acb" placeholder="(x,y)"
-                  onChange={inputHandler} value={angValues[2]}/>
+               A: <input className="input-triangle" type="text" name="b1ABa" id="bac" placeholder={angValues[0]} {... displayThirdAngle ? {value: angValues[0]} : {}}
+                  onChange={inputHandler} />
+                B: <input className="input-triangle" type="text" name="c1BCb" id="abc" placeholder={angValues[1]} {... displayThirdAngle ? {value: angValues[1]} : {}}
+                  onChange={inputHandler} />
+                C: <input className="input-triangle" type="text" name="a1CAc" id="acb" placeholder={angValues[2]} {... displayThirdAngle ? {value: angValues[2]} : {}}
+                  onChange={inputHandler} />
               </div>
             ) : (null)}
 
