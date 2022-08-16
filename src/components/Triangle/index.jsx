@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+//exp
 export const Triangle = () => {
   const [lenOfSides] = useState([0, 0, 0])
   const [given, setGiven] = useState(null)
@@ -39,11 +40,11 @@ export const Triangle = () => {
       const angle = angleIDs.indexOf(inputId)
       event.target.value = inputVal
       inputs.angles[angle] = parseInt(inputVal)
+      console.log(inputs.angles, angle);
       if (type === "equilateral") {
         anglesOfEquilateral(angle, parseInt(inputVal))
       }
       if (type === "default") {
-        console.log(event.target.value);
         anglesOfDefault(inputs, event.target.name, event.target.value)
       }
     }
@@ -151,9 +152,9 @@ export const Triangle = () => {
     window.ggbApplet.evalCommand(`a: Line(B,C)`)
     window.ggbApplet.evalCommand(`b: Line(A,C)`)
     window.ggbApplet.evalCommand(`c: Line(A,B)`)
-    window.ggbApplet.setVisible('a', false)
-    window.ggbApplet.setVisible('b', false)
-    window.ggbApplet.setVisible('c', false)
+    //window.ggbApplet.setVisible('a', false)
+    //window.ggbApplet.setVisible('b', false)
+    //window.ggbApplet.setVisible('c', false)
     window.ggbApplet.evalCommand(`alpha = Angle(C,A,B)`)
     window.ggbApplet.evalCommand(`betta = Angle(A,B,C)`)
     window.ggbApplet.evalCommand(`gus = Angle(B,C,A)`)
@@ -165,10 +166,15 @@ export const Triangle = () => {
     coordinates[2] = getValueOfCoords(window.ggbApplet.getValueString(`C`))
   }
 
-  const anglesOfDefault = (inputs, id, angle) => {
+  const anglesOfDefault = (inputs, id, angle) => {  
     if (angle === "" || angle === NaN) {
-      angValues[1] = 0
-      console.log(angValues);
+      if (id === "b1ABa") {
+        angValues[0] = 0
+      } else if ( id === "c1BCb") {
+        angValues[1] = 0
+      } else {
+        angValues[2] = 0
+      }
       return;
     }
     const countDiff = () => {
@@ -180,7 +186,8 @@ export const Triangle = () => {
       })
      return diff
     } 
-
+    console.log(inputs.angles);
+    console.log(angValues);
     if (inputs.angles.filter(x => Number.isNaN(x)).length === 2 ) {
       let R = window.ggbApplet.getValue(`${id.substr(2, 2)}`);
       window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
@@ -189,8 +196,8 @@ export const Triangle = () => {
       window.ggbApplet.setVisible(id.substr(0, 2), false)
       window.ggbApplet.setVisible(id, false)
       setCheck(id);
-
     } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 1 ) {
+      console.log("Qwe");
       if (check === "b1ABa" && id === "a1CAc") {
         angle = countDiff();
         id = "c1BCb" 
@@ -204,9 +211,23 @@ export const Triangle = () => {
       window.ggbApplet.evalCommand(`${id.substr(0, 2)} = Rotate(${id.substr(0, 1)},${angle}°,${id.substr(2, 1)})`)
       window.ggbApplet.evalCommand(`${id.substr(3, 1)} = Intersect(${id.substr(0, 2)},${id.substr(4, 1)})`)
       window.ggbApplet.setVisible(id.substr(0, 2), false)
-      setDisplayThirdAngle(true);
+      setDisplayThirdAngle(true); 
     } else if (inputs.angles.filter(x => Number.isNaN(x)).length === 0 && displayThirdAngle) {
-        console.log("qwe");
+        if (id === "b1ABa") {
+          //inputs.angles = [angle,NaN,NaN]
+        } else if ( id === "c1BCb") {
+          //inputs.angles = [NaN,angle,NaN]
+        } else {
+          inputs.angles = [NaN,NaN,NaN]
+          setAngValues([0,0,0])
+          document.getElementById("bac").value = "";
+          document.getElementById("abc").value = "";
+          window.ggbApplet.evalCommand(`A: (0,0)`)
+          window.ggbApplet.evalCommand(`B: (4,8)`)
+          window.ggbApplet.evalCommand(`C: (7,1)`)
+          return;
+        }
+        setDisplayThirdAngle(false)
       }
       setAngValues([
         parseFloat(parseFloat(window.ggbApplet.getValue(`alpha`) * 180 / Math.PI).toFixed(2)),
@@ -269,7 +290,7 @@ export const Triangle = () => {
     }
   }
 
-// -------------------------------------const sideIDs = ['bc', 'ac', 'ab']---------------------------------
+//------------------------------------const sideIDs = ['bc', 'ac', 'ab']---------------------------------
 
   return (
     <div className="options-menu">
@@ -291,11 +312,11 @@ export const Triangle = () => {
           <li><input type='checkbox' checked={check2} onChange={() => { toggleCheck2(!check2) }} /> Углы
             {check2 ? (
               <div className="input-points">
-               A: <input className="input-triangle" type="text" name="b1ABa" id="bac" placeholder={angValues[0]} {... displayThirdAngle ? {value: angValues[0]} : {}}
+               A: <input className="input-triangle" type="text" name="b1ABa" id="bac" placeholder={angValues[0]} //{... displayThirdAngle ? {value: angValues[0]} : {}}
                   onChange={inputHandler} />
-                B: <input className="input-triangle" type="text" name="c1BCb" id="abc" placeholder={angValues[1]} {... displayThirdAngle ? {value: angValues[1]} : {}}
+                B: <input className="input-triangle" type="text" name="c1BCb" id="abc" placeholder={angValues[1]} //{... displayThirdAngle ? {value: angValues[1]} : {}}
                   onChange={inputHandler} />
-                C: <input className="input-triangle" type="text" name="a1CAc" id="acb" placeholder={angValues[2]} {... displayThirdAngle ? {value: angValues[2]} : {}}
+                C: <input className="input-triangle" type="text" name="a1CAc" id="acb" placeholder={angValues[2]} //{... displayThirdAngle ? {value: angValues[2]} : {}}
                   onChange={inputHandler} />
               </div>
             ) : (null)}
@@ -337,8 +358,6 @@ export const Triangle = () => {
           </div>
         </ul>
       ) : (null)}
-
-
     </div>
   );
 }
